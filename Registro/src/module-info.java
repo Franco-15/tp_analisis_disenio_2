@@ -4,6 +4,6 @@
 /**
  * 
  */
-module SistemaGestionColasEspera {
+module Registro {
 	requires java.desktop;
 }
