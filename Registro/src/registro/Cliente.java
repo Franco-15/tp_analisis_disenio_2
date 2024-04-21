@@ -1,6 +1,6 @@
 package registro;
 
-public class Cliente implements ICliente{
+public class Cliente implements ICliente {
 	private String dni;
 
 	public Cliente(String dni) {
@@ -14,5 +14,4 @@ public class Cliente implements ICliente{
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
-	
 }
