@@ -74,11 +74,11 @@ public class Metricas implements IMetricas{
 	}
 
 	public void actualizarClientesAtendidos(int cantidad) {
-		this.clientesAtendidos += cantidad;
+		this.clientesAtendidos = cantidad;
 	}
 
 	public void actualizarClientesNoAtendidos(int cantidad) {
-		this.clientesNoAtendidos += cantidad;
+		this.clientesNoAtendidos = cantidad;
 	}
 
 	public void actualizarTMaxEspera(LocalDateTime fechaLlegada) {
@@ -92,16 +92,17 @@ public class Metricas implements IMetricas{
 	}
 
 	public void actualizarTMinEspera(LocalDateTime fechaLlegada) {
+		
 		LocalDateTime horaActual = LocalDateTime.now();
 		Duration duracion = Duration.between(fechaLlegada, horaActual);
 		int esperaEnMinutos = (int) duracion.toMinutes();
 
-		if (this.tMinEspera > esperaEnMinutos)
+		if ( this.tMinEspera== -1 || this.tMinEspera > esperaEnMinutos)
 			this.tMinEspera = esperaEnMinutos;
 	}
 
 	public void actualizarClienteEnEspera(int cantidad) {
-		this.clientesEnEspera += cantidad;
+		this.clientesEnEspera = cantidad;
 	}
 
 	public void actualizarTiempoTotalEspera(LocalDateTime fechaLlegada) {
@@ -119,7 +120,7 @@ public class Metricas implements IMetricas{
 	}
 
 	public void actualizarCantidadClientesRegistrados(int cantidad) {
-		this.cantTotalClientesRegistrados += cantidad;
+		this.cantTotalClientesRegistrados = cantidad;
 	}
 
 	public Map<String, Object> obtenerMetricas() {

@@ -1,4 +1,4 @@
-package colaEspera;
+package comunicacion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,30 +7,31 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class RecepcionRegistro implements IRegistro{
-	private static RecepcionRegistro instance = null;
+public class ServidorColaEspera implements Runnable{
+	private static ServidorColaEspera instance = null;
 	
 	private int port;
-	private GestionRecepcion gestionMensajesRecibidos;
+	private GestionRecepcionServidor gestionMensajesRecibidos;
 	
-	private RecepcionRegistro(int port) {
+	private ServidorColaEspera(int port) {
 		this.port = port;
-		this.gestionMensajesRecibidos = new GestionRecepcion();
+		this.gestionMensajesRecibidos = new GestionRecepcionServidor();
 	}
 
-	public static RecepcionRegistro getInstance() {
+	public static ServidorColaEspera getInstance() {
 		if (instance == null)
-			instance = new RecepcionRegistro(12345);
+			instance = new ServidorColaEspera(1);
 
 		return instance;
 	}
 
-	public void recepcionarRegistro() {
+	@Override
+	public void run() {
 		try {
 
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				System.out.println("Servidor iniciado. Esperando conexiones...");
+				System.out.println("Servidor Cola Espera escuchando en puerto" + this.port);
 
 				Socket clientSocket = serverSocket.accept();
 				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
@@ -53,5 +54,6 @@ public class RecepcionRegistro implements IRegistro{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		
 	}
 }
