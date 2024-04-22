@@ -59,6 +59,12 @@ public class Turnos {
 			// Notificar al cliente por pantalla
 			publicacionNotificacion.publicar(new TElementoNotificacion(clienteLlamado.getDni(), String.valueOf(box)));
 			
+			try {
+	            Thread.sleep(7000); // 5000 milisegundos = 5 segundos
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+			
 			// Simular respuesta del cliente al llamado
 			if (this.clienteLlamadoResponde(clienteYaLlamado)) {
 				clienteResponde = true;

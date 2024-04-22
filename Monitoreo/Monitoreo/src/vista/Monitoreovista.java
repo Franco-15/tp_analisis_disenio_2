@@ -95,9 +95,4 @@ public class Monitoreovista extends JFrame{
 	        labelTiempoTotalEspera.setText("Tiempo Total de Espera: " + metricasMap.get("Tiempo total de espera"));
 	        labelCantClientes.setText("Cantidad de Clientes: " + metricasMap.get("Cantidad total de clientes"));
 	    }
-	    
-	    public static void main(String[] args) {
-	        // Instanciar el objeto Monitoreo
-	        Monitoreovista monitoreo = new Monitoreovista();
-	    }
 }
