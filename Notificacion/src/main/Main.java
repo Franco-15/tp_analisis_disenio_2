@@ -1,6 +1,6 @@
 package main;
 
-import notificacion.Servidor_notificacion;
+import comunicacion.Servidor_notificacion;
 
 public class Main {
 

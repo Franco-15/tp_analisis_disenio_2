@@ -3,6 +3,8 @@ package monitoreo;
 import java.io.IOException;
 import java.util.Map;
 
+import comunicacion.Cliente_monitoreo;
+
 
 public class Controlador_monitoreo {
 	private Cliente_monitoreo cliente;

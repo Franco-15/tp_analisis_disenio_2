@@ -2,7 +2,7 @@ package notificacion;
 import java.util.ArrayList;
 
 import notificacion.TElementoNotificacion;
-import vista.Vista_notificacion;
+import vistas.Vista_notificacion;
 
 public class Controlador_notificacion {
 	

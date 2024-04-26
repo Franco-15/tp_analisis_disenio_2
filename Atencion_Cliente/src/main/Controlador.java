@@ -3,8 +3,8 @@ package main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import atencion.Atencion;
-import box.Box;
+import modelo.atencion.Atencion;
+import modelo.box.Box;
 import vistas.LoginEmpleado;
 import vistas.VentanaMainEmpleado;
 
@@ -14,9 +14,9 @@ public class Controlador implements ActionListener{
 	private Box boxAtencion;
 	
 	public Controlador() {
-		this.vistaLoginEmpleado = new LoginEmpleado();
+		this.vistaLoginEmpleado= new LoginEmpleado();
 		this.vistaLoginEmpleado.setActionListener(this);
-		this.vistaLoginEmpleado.setVisible(true);
+		
 	}
  
 	@Override
@@ -45,4 +45,11 @@ public class Controlador implements ActionListener{
 		}
 		
 	}
+
+	
+	public void run() {
+		this.vistaLoginEmpleado.setVisible(true);
+	}
+
 }
+

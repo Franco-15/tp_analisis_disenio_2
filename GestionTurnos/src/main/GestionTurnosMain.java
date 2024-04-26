@@ -3,7 +3,7 @@ package main;
 import comunicacion.ServidorAtencionClientes;
 import comunicacion.ServidorColaEspera;
 import comunicacion.ServidorMonitoreo;
-import turnos.Turnos;
+import modelo.turnos.Turnos;
 
 public class GestionTurnosMain {
 	public static void main(String[] args) {

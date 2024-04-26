@@ -1,5 +1,7 @@
 package registro;
 
+import comunicacion.PublicacionRegistro;
+
 public class Registro {
 //	private ICliente cliente;
 	private PublicacionRegistro publicacion = PublicacionRegistro.getInstance();

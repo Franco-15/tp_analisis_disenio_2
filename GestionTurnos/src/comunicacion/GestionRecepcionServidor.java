@@ -2,11 +2,11 @@ package comunicacion;
 
 import java.util.Map;
 
-import colaEspera.ColaEspera;
-import colaEspera.IColaEspera;
-import colaEspera.TElementoColaEspera;
-import metricas.Metricas;
-import turnos.Turnos;
+import modelo.colaEspera.ColaEspera;
+import modelo.colaEspera.IColaEspera;
+import modelo.colaEspera.TElementoColaEspera;
+import modelo.metricas.Metricas;
+import modelo.turnos.Turnos;
 
 public class GestionRecepcionServidor {
 	
