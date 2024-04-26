@@ -13,6 +13,8 @@ dist/
 *.tmp
 *.temp
 
+target/
+
 # Archivos de configuración local o sensibles
 *.properties
 .env
