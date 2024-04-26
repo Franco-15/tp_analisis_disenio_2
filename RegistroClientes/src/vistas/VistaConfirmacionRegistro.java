@@ -12,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class ConfirmationRegistro extends JDialog {
+import controlador.Controlador;
+
+public class VistaConfirmacionRegistro extends JDialog {
 	/**
 	 * 
 	 */
@@ -20,8 +22,9 @@ public class ConfirmationRegistro extends JDialog {
 	private JLabel confirmationLabel;
 	private JButton confirmButton;
 	private JButton cancelButton;
+	
 
-	public ConfirmationRegistro(JFrame parent, String document) {
+	public VistaConfirmacionRegistro(JFrame parent, String document) {
 		super(parent, "Confirmar Documento", true);
 		setSize(458, 236);
 		setLocationRelativeTo(parent);
@@ -56,5 +59,14 @@ public class ConfirmationRegistro extends JDialog {
 	public void setActionListener(ActionListener actionListener) {
 		this.cancelButton.addActionListener(actionListener);
 		this.confirmButton.addActionListener(actionListener);
+
 	}
+	
+	public void cerrarVista() {
+		this.dispose();
+	}
+
+
+	
 }
+

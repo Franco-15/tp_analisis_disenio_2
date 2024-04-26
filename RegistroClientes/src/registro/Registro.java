@@ -2,7 +2,7 @@ package registro;
 
 import comunicacion.PublicacionRegistro;
 
-public class Registro {
+public class Registro {//extends Observable??
 //	private ICliente cliente;
 	private PublicacionRegistro publicacion = PublicacionRegistro.getInstance();
 
