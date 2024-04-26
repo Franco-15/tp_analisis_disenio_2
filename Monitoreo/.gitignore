@@ -1,6 +1,7 @@
 # Java
 *.class
 bin/
+target/
 .idea/
 *.iml
 libs/
@@ -13,8 +14,6 @@ dist/
 *.tmp
 *.temp
 
-target/
-
 # Archivos de configuración local o sensibles
 *.properties
 .env
@@ -24,3 +23,13 @@ config/
 .vscode/
 .classpath
 .project
+
+# Maven
+mvnw
+mvnw.cmd
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.branch
+release.properties
