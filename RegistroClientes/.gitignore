@@ -1,1 +1,24 @@
-/target/
+# Java
+*.class
+bin/
+.idea/
+*.iml
+libs/
+*.jar
+*.war
+*.ear
+build/
+dist/
+*.log
+*.tmp
+*.temp
+
+# Archivos de configuración local o sensibles
+*.properties
+.env
+config/
+
+# Archivos específicos del IDE
+.vscode/
+.classpath
+.project
