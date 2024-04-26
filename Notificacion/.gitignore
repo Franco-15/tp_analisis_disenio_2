@@ -1,1 +1,34 @@
-/target/
+# Java
+*.class
+bin/
+target/
+.idea/
+*.iml
+*.jar
+*.war
+*.ear
+build/
+dist/
+*.log
+*.tmp
+*.temp
+
+# Archivos de configuración local o sensibles
+*.properties
+.env
+config/
+
+# Archivos específicos del IDE
+.vscode/
+.classpath
+.project
+
+# Maven
+mvnw
+mvnw.cmd
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.branch
+release.properties
