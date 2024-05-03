@@ -75,7 +75,7 @@ public class ServidorAtencionClientes implements Runnable {
         secondaryThread.start();
 
         // Iniciar el servidor secundario para tomar el lugar del primario en caso de fallo
-        ServidorSecundario servidorSecundario = new ServidorSecundario(primaryServer, secondaryServer);
+        ServidorAtencionClientesSecundario servidorSecundario = new ServidorAtencionClientesSecundario(primaryServer, secondaryServer);
         Thread secondaryReplacementThread = new Thread(servidorSecundario);
         secondaryReplacementThread.start();
     }

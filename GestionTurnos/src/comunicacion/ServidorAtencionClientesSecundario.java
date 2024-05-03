@@ -4,12 +4,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class ServidorSecundario implements Runnable {
+class ServidorAtencionClientesSecundario implements Runnable {
 
     private ServidorAtencionClientes primaryServer;
     private ServidorAtencionClientes secondaryServer;
 
-    public ServidorSecundario(ServidorAtencionClientes primaryServer, ServidorAtencionClientes secondaryServer) {
+    public ServidorAtencionClientesSecundario(ServidorAtencionClientes primaryServer, ServidorAtencionClientes secondaryServer) {
         this.primaryServer = primaryServer;
         this.secondaryServer = secondaryServer;
     }
