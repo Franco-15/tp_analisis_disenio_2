@@ -1,6 +1,6 @@
 package main;
 
-import comunicacion.ServidorAtencionClientes;
+import comunicacion.ServidorGestionTurnos;
 import comunicacion.ServidorColaEspera;
 import comunicacion.ServidorMonitoreo;
 import modelo.turnos.Turnos;
@@ -10,7 +10,7 @@ public class GestionTurnosMain {
 		Turnos turnos = Turnos.getInstance();
 
 		ServidorColaEspera servidorColaEspera = ServidorColaEspera.getInstance();
-		ServidorAtencionClientes servidorAtencionClientes = ServidorAtencionClientes.getInstance();
+		ServidorGestionTurnos servidorAtencionClientes = ServidorGestionTurnos.getInstance();
 		ServidorMonitoreo servidorMonitoreo = ServidorMonitoreo.getInstance();
 		
 		Thread t1 = new Thread(servidorColaEspera);

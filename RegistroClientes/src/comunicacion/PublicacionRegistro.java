@@ -7,44 +7,60 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PublicacionRegistro {
-	private static PublicacionRegistro instance = null;
-    private String ip;
-	private int port;
+    private static PublicacionRegistro instance = null;
+    private String ipMonitor;
+    private int portMonitor;
 
-	private PublicacionRegistro(String ip, int port) {
-		this.ip = ip;
-		this.port = port;
-	}
-	
-	public static PublicacionRegistro getInstance() {
-		if(instance == null)
-			instance = new PublicacionRegistro("localhost", 1);
-		
-		return instance;
-	}
-	
-	public String publicar(String mensaje) {
-		String response = "";
+    private PublicacionRegistro(String ipMonitor, int portMonitor) {
+        this.ipMonitor = ipMonitor;
+        this.portMonitor = portMonitor;
+    }
 
-		try {
-			Socket socket = new Socket(this.ip, this.port);
+    public static PublicacionRegistro getInstance() {
+        if (instance == null)
+            instance = new PublicacionRegistro("localhost", 9000); // Definir el puerto del servidor monitor
 
-			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        return instance;
+    }
 
-			if (mensaje != null) {
-				output.println(mensaje);
-				response = input.readLine();
-			}
+    public String publicar(String mensaje) {
+        String response = "";
 
-			input.close();
-			output.close();
-			socket.close();
+        try {
+            // Conectar al servidor monitor
+            Socket socketMonitor = new Socket(this.ipMonitor, this.portMonitor);
+            BufferedReader inputMonitor = new BufferedReader(new InputStreamReader(socketMonitor.getInputStream()));
+            PrintWriter outputMonitor = new PrintWriter(socketMonitor.getOutputStream(), true);
 
-			return response;
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			return "2";
-		}
-	}
+            // Enviar solicitud de publicación
+            outputMonitor.println("publicar");
+
+            // Recibir el número de puerto del servidor destino
+            int portDestino = Integer.parseInt(inputMonitor.readLine());
+            
+            // Cerrar conexión con el servidor monitor
+            inputMonitor.close();
+            outputMonitor.close();
+            socketMonitor.close();
+
+            // Conectar al servidor destino para publicar el mensaje
+            Socket socketDestino = new Socket("localhost", portDestino);
+            BufferedReader inputDestino = new BufferedReader(new InputStreamReader(socketDestino.getInputStream()));
+            PrintWriter outputDestino = new PrintWriter(socketDestino.getOutputStream(), true);
+
+            // Publicar el mensaje
+            outputDestino.println(mensaje);
+            response = inputDestino.readLine();
+
+            // Cerrar conexión con el servidor destino
+            inputDestino.close();
+            outputDestino.close();
+            socketDestino.close();
+
+            return response;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return "2"; // Error al publicar
+        }
+    }
 }
