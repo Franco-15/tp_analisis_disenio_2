@@ -18,7 +18,7 @@ public class PublicacionRegistro {
 
 	public static PublicacionRegistro getInstance() {
 		if (instance == null)
-			instance = new PublicacionRegistro("localhost", 9000); // Definir el puerto del servidor monitor
+			instance = new PublicacionRegistro("localhost", 10); // Definir el puerto del servidor monitor
 
 		return instance;
 	}
@@ -37,25 +37,28 @@ public class PublicacionRegistro {
 
 			// Recibir el número de puerto del servidor destino
 			int portDestino = Integer.parseInt(inputMonitor.readLine());
-
+			
 			// Cerrar conexión con el servidor monitor
 			inputMonitor.close();
 			outputMonitor.close();
 			socketMonitor.close();
+			
+			if(portDestino != -1) {
+				// Conectar al servidor destino para publicar el mensaje
+				Socket socketDestino = new Socket("localhost", portDestino);
+				BufferedReader inputDestino = new BufferedReader(new InputStreamReader(socketDestino.getInputStream()));
+				PrintWriter outputDestino = new PrintWriter(socketDestino.getOutputStream(), true);
 
-			// Conectar al servidor destino para publicar el mensaje
-			Socket socketDestino = new Socket("localhost", portDestino);
-			BufferedReader inputDestino = new BufferedReader(new InputStreamReader(socketDestino.getInputStream()));
-			PrintWriter outputDestino = new PrintWriter(socketDestino.getOutputStream(), true);
+				// Publicar el mensaje
+				outputDestino.println(mensaje);
+				response = inputDestino.readLine();
 
-			// Publicar el mensaje
-			outputDestino.println(mensaje);
-			response = inputDestino.readLine();
-
-			// Cerrar conexión con el servidor destino
-			inputDestino.close();
-			outputDestino.close();
-			socketDestino.close();
+				// Cerrar conexión con el servidor destino
+				inputDestino.close();
+				outputDestino.close();
+				socketDestino.close();
+			} else
+				response = "2";
 
 			return response;
 		} catch (IOException e) {

@@ -20,9 +20,9 @@ public class GestionTurnosMain {
 		Thread t3 = new Thread(servidorMonitoreo);
 		Thread t4 = new Thread(servidorMonitorGestionTurnos);
 		
-		t1.start();
-		t2.start();
-		t3.start();
+//		t1.start();
+//		t2.start();
+//		t3.start();
 		t4.start();
 		
 	}
