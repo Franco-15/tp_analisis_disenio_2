@@ -25,45 +25,60 @@ public class Monitoreovista extends JFrame{
 	    private JLabel labelTiempoPromedioEspera;
 	    private JLabel labelTiempoTotalEspera;
 	    private JLabel labelCantClientes;
-	    private JScrollPane scrollPane;
-	    private JTextArea textArea;
 	    private JButton btnActualizar;
 	    private Controlador_monitoreo controlador;
+	    private JLabel lblNewLabel;
 	    
 	    public Monitoreovista(){
 	    	  setTitle("Estadísticas del Sistema");
-	          setSize(400, 300);
+	          setSize(707, 451);
 	          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	          JPanel panel = new JPanel();
-	          panel.setLayout(new GridLayout(9, 2));
+	          panel.setLayout(null);
 
 	          labelClientesAtendidos = new JLabel("Clientes Atendidos: ");
-	          labelClientesAtendidos.setFont(new Font("Vazirmatn", Font.BOLD | Font.ITALIC, 12));
+	          this.labelClientesAtendidos.setBounds(10, 52, 384, 29);
+	          labelClientesAtendidos.setFont(new Font("Verdana", Font.PLAIN, 12));
 	          panel.add(labelClientesAtendidos);
 
 	          labelClientesNoAtendidos = new JLabel("Clientes No Atendidos: ");
+	          this.labelClientesNoAtendidos.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelClientesNoAtendidos.setBounds(10, 92, 384, 29);
 	          panel.add(labelClientesNoAtendidos);
 
 	          labelTMaxEspera = new JLabel("Tiempo Máximo de Espera: ");
+	          this.labelTMaxEspera.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelTMaxEspera.setBounds(10, 132, 384, 29);
 	          panel.add(labelTMaxEspera);
 
 	          labelTMinEspera = new JLabel("Tiempo Mínimo de Espera: ");
+	          this.labelTMinEspera.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelTMinEspera.setBounds(10, 172, 384, 29);
 	          panel.add(labelTMinEspera);
 
 	          labelClientesEnEspera = new JLabel("Clientes en Espera: ");
+	          this.labelClientesEnEspera.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelClientesEnEspera.setBounds(10, 212, 384, 29);
 	          panel.add(labelClientesEnEspera);
 
 	          labelTiempoPromedioEspera = new JLabel("Tiempo Promedio de Espera: ");
+	          this.labelTiempoPromedioEspera.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelTiempoPromedioEspera.setBounds(10, 252, 384, 29);
 	          panel.add(labelTiempoPromedioEspera);
 
 	          labelTiempoTotalEspera = new JLabel("Tiempo Total de Espera: ");
+	          this.labelTiempoTotalEspera.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelTiempoTotalEspera.setBounds(10, 292, 384, 29);
 	          panel.add(labelTiempoTotalEspera);
 
 	          labelCantClientes = new JLabel("Cantidad de Clientes: ");
+	          this.labelCantClientes.setFont(new Font("Verdana", Font.PLAIN, 12));
+	          this.labelCantClientes.setBounds(10, 332, 384, 29);
 	          panel.add(labelCantClientes);
 
 	          btnActualizar = new JButton("Actualizar");
+	          this.btnActualizar.setBounds(10, 372, 671, 29);
 	          btnActualizar.addActionListener(new ActionListener() {
 	              @Override
 	              public void actionPerformed(ActionEvent e) {
@@ -74,6 +89,11 @@ public class Monitoreovista extends JFrame{
 	          panel.add(btnActualizar);
 	          
 	          getContentPane().add(panel);
+	          
+	          this.lblNewLabel = new JLabel("Monitoreo General del Sistema");
+	          this.lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+	          this.lblNewLabel.setBounds(10, 11, 671, 30);
+	          panel.add(this.lblNewLabel);
 	          setVisible(true);
 	          controlador = new Controlador_monitoreo(3,"localhost");
 	    }
