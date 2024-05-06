@@ -1,8 +1,13 @@
 package modelo.colaEspera;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class TElementoColaEspera {
+public class TElementoColaEspera implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String dni;
 	private LocalDateTime fechaHoraLlegada;
 	

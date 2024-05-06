@@ -9,7 +9,7 @@ public class Atencion {
 	public Atencion() {}
 	
 	public String llamarCliente(Box box) {
-		comunicacion = new Comunicacion("localhost", 2);
+		comunicacion = new Comunicacion("localhost", 10);
 		String cliente = comunicacion.obtenerCliente(String.valueOf(box.getNumero()));
 		
 		return cliente;

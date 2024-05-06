@@ -6,7 +6,7 @@ import java.net.Socket;
 
 import monitor.Monitor;
 
-public class ServidorDireccionamiento{
+public class ServidorDireccionamiento implements Runnable{
 	private static ServidorDireccionamiento instance = null;
 	private int port;
 	private Monitor monitor; // Nombre cambiable la verdad, no me convence
@@ -15,18 +15,17 @@ public class ServidorDireccionamiento{
 	private ServidorDireccionamiento(int port) {
 		this.port = port;
 		this.monitor = Monitor.getInstance();
-		this.monitor.run();
 	}
 	
-	public static ServidorDireccionamiento getInstace() {
+	public static ServidorDireccionamiento getInstance() {
 		if(instance == null)
 			instance = new ServidorDireccionamiento(10);
 		
 		return instance;
 	}
-	
 
-	public void escuchar() {
+	@Override
+	public void run() {
 		try {
 
 			this.serverSocket = new ServerSocket(this.port);
@@ -42,5 +41,6 @@ public class ServidorDireccionamiento{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		
 	}
 }

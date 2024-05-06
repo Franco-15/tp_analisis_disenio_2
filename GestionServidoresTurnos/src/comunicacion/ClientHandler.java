@@ -24,8 +24,8 @@ public class ClientHandler implements Runnable {
 			PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 
 			String mensaje = input.readLine();
-			if (mensaje.equals("publicar")) {
-				output.println(monitor.getActiveServerPort()); // Le envio a subsistema Registro donde debe	publicar al cliente 
+			if (mensaje != null) {
+				output.println(monitor.getActiveServerPort(mensaje)); // Le envio a subsistema Registro donde debe	publicar al cliente 
 			}
 
 			input.close();

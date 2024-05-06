@@ -33,10 +33,11 @@ public class PublicacionRegistro {
 			PrintWriter outputMonitor = new PrintWriter(socketMonitor.getOutputStream(), true);
 
 			// Enviar solicitud de publicación
-			outputMonitor.println("publicar");
+			outputMonitor.println("registro");
 
 			// Recibir el número de puerto del servidor destino
 			int portDestino = Integer.parseInt(inputMonitor.readLine());
+			System.out.println("puerto destino registro: " + portDestino);
 			
 			// Cerrar conexión con el servidor monitor
 			inputMonitor.close();

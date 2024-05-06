@@ -10,11 +10,15 @@ import modelo.turnos.Turnos;
 
 public class GestionRecepcionServidor {
 	
-	private IColaEspera colaEspera = ColaEspera.getInstance();
-	private Turnos turnos = Turnos.getInstance();
-	private Metricas metricas = Metricas.getInstance();
+	private IColaEspera colaEspera;
+	private Turnos turnos;
+	private Metricas metricas;
 	
-	public GestionRecepcionServidor() {}
+	public GestionRecepcionServidor() {
+		this.colaEspera = ColaEspera.getInstance();
+		this.turnos = Turnos.getInstance();
+		this.metricas = Metricas.getInstance();
+	}
 	
 	public String agregarClienteAColaEspera(String mensaje) {
 		TElementoColaEspera elementoCola = new TElementoColaEspera(mensaje);
@@ -41,5 +45,13 @@ public class GestionRecepcionServidor {
 	
 	public Map<String, Object> actualizarMetricas(){
 		return metricas.obtenerMetricas();
+	}
+	
+	public IColaEspera getCola(){
+		return this.colaEspera;
+	}
+
+	public void setColaEspera(IColaEspera nuevaColaEspera) {
+		this.colaEspera.setColaEspera(nuevaColaEspera.getColaEspera());
 	}
 }

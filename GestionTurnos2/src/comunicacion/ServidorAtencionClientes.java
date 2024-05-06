@@ -21,7 +21,7 @@ public class ServidorAtencionClientes implements Runnable{
 
 	public static ServidorAtencionClientes getInstance() {
 		if (instance == null)
-			instance = new ServidorAtencionClientes(5);
+			instance = new ServidorAtencionClientes(21);
 
 		return instance;
 	}

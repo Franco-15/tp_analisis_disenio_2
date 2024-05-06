@@ -1,14 +1,21 @@
 package modelo.colaEspera;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class ColaEspera implements IColaEspera {
+public class ColaEspera implements IColaEspera, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static ColaEspera instance = null;
 
-	private Queue<TElementoColaEspera> colaEspera = new LinkedList<>();
+	private Queue<TElementoColaEspera> colaEspera;
 
 	private ColaEspera() {
+		this.colaEspera = new LinkedList<>();
 	}
 
 	public static ColaEspera getInstance() {
@@ -56,6 +63,14 @@ public class ColaEspera implements IColaEspera {
 	        }
 	    }
 	    return false;
+	}
+
+	public Queue<TElementoColaEspera> getColaEspera() {
+		return colaEspera;
+	}
+
+	public void setColaEspera(Queue<TElementoColaEspera> colaEspera) {
+		this.colaEspera = colaEspera;
 	}
 
 }

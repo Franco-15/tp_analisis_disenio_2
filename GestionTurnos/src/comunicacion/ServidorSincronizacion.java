@@ -5,23 +5,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
 
-public class ServidorMonitoreo implements Runnable {
+import modelo.colaEspera.IColaEspera;
 
-	private static ServidorMonitoreo instance = null;
+public class ServidorSincronizacion implements Runnable {
+
+	private static ServidorSincronizacion instance = null;
 
 	private int puerto;
 	private GestionRecepcionServidor gestionMensajesRecibidos;
 
-	private ServidorMonitoreo(int puerto) {
+	private ServidorSincronizacion(int puerto) {
 		this.puerto = puerto;
 		this.gestionMensajesRecibidos = new GestionRecepcionServidor();
 	}
 
-	public static ServidorMonitoreo getInstance() {
+	public static ServidorSincronizacion getInstance() {
 		if (instance == null)
-			instance = new ServidorMonitoreo(20);
+			instance = new ServidorSincronizacion(16);
 
 		return instance;
 	}
@@ -29,23 +30,26 @@ public class ServidorMonitoreo implements Runnable {
 	@Override
 	public void run() {
 		try {
-
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
-				System.out.println("Servidor Monitoreo escuchando en puerto" + this.puerto);
-				
+				System.out.println("Servidor sincronizacion escuchando en puerto" + this.puerto);
+
 				Socket clientSocket = serverSocket.accept();
 				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
 				ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
-				Map<String, Object> mensaje = (Map<String, Object>) input.readObject();
-				
+				Object mensaje = (Object) input.readObject();
+
 				if (mensaje != null) {
-					System.out.println("Cliente: " + mensaje);
-					Map<String, Object> result = gestionMensajesRecibidos.actualizarMetricas();
-					output.writeObject(result);
+					if (mensaje.equals("getCola")) {
+						IColaEspera result = gestionMensajesRecibidos.getCola();
+						output.writeObject(result);
+					}else {
+						gestionMensajesRecibidos.setColaEspera((IColaEspera)mensaje);
+						output.writeObject("Sincronizacion exitosa!");
+					}
 				}
 
 				input.close();
@@ -53,7 +57,7 @@ public class ServidorMonitoreo implements Runnable {
 				clientSocket.close();
 				serverSocket.close();
 			}
-		} catch (IOException | ClassNotFoundException e ) {
+		} catch (IOException | ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 

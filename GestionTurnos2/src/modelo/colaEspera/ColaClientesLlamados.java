@@ -51,5 +51,17 @@ public class ColaClientesLlamados implements IColaEspera{
 	public boolean existe(TElementoColaEspera elemento) {
 		return this.colaEspera.contains(elemento);
 	}
+
+	@Override
+	public Queue<TElementoColaEspera> getColaEspera() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setColaEspera(Queue<TElementoColaEspera> colaEspera) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

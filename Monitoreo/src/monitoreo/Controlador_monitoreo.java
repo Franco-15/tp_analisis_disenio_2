@@ -23,15 +23,7 @@ public class Controlador_monitoreo {
         
     	
     	Map<String, Object> mapa = null;
-		try {
-			mapa = (Map<String, Object>) cliente.enviarYRecibir();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		mapa = (Map<String, Object>) cliente.enviarYRecibir();
 
         return mapa;
     }
