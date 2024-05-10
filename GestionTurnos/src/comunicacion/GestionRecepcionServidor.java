@@ -1,5 +1,9 @@
 package comunicacion;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Map;
 
 import modelo.colaEspera.ColaEspera;
@@ -54,4 +58,24 @@ public class GestionRecepcionServidor {
 	public void setColaEspera(IColaEspera nuevaColaEspera) {
 		this.colaEspera.setColaEspera(nuevaColaEspera.getColaEspera());
 	}
+
+	public void sincronizar(String mensaje,int port) throws IOException {
+		ServerSocket serverSocket = new ServerSocket(port);
+		System.out.println("Servidor Cola Espera escuchando en puerto" + port);
+
+		Socket clientSocket = serverSocket.accept();
+		System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+
+		
+		PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+		output.println(mensaje);
+		
+		
+
+		
+	}
+
+	
+
+
 }

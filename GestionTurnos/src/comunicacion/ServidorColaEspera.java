@@ -9,8 +9,8 @@ import java.net.Socket;
 
 public class ServidorColaEspera implements Runnable{
 	private static ServidorColaEspera instance = null;
-	
 	private int port;
+	private int secondaryPort=18;
 	private GestionRecepcionServidor gestionMensajesRecibidos;
 	
 	private ServidorColaEspera(int port) {
@@ -44,6 +44,7 @@ public class ServidorColaEspera implements Runnable{
 					System.out.println("Cliente con documento: " + mensaje);
 					String result = gestionMensajesRecibidos.agregarClienteAColaEspera(mensaje);
 					output.println(result);
+					gestionMensajesRecibidos.sincronizar(mensaje,secondaryPort);
 				}
 
 				input.close();

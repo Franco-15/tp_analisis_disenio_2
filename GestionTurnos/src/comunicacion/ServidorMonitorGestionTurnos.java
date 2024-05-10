@@ -13,7 +13,7 @@ public class ServidorMonitorGestionTurnos implements Runnable {
 	private int port;
 
 	private ServidorMonitorGestionTurnos(int port) {
-
+		
 		this.port = port;
 	}
 

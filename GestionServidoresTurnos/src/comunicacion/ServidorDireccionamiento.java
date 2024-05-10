@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import monitor.Monitor;
+import comunicacion.ClientHandler;
 
 public class ServidorDireccionamiento implements Runnable{
 	private static ServidorDireccionamiento instance = null;
