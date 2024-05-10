@@ -69,6 +69,8 @@ public class GestionRecepcionServidor {
 		
 		PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 		output.println(mensaje);
+		output.close();
+		serverSocket.close();
 		
 		
 

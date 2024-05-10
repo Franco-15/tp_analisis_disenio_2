@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServidorSincronizacionRecepcion {
+public class ServidorSincronizacionRecepcion implements Runnable{
 	private int puerto;
 	private GestionRecepcionServidor gestionMensajesRecibidos;
 	private static ServidorSincronizacionRecepcion instance = null;
@@ -21,8 +21,8 @@ public class ServidorSincronizacionRecepcion {
 			instance = new ServidorSincronizacionRecepcion(18);
 		return instance;
 	}
-
-	public void iniciar() {
+	@Override
+	public void run() {
 		try {
 			ServerSocket servidorSocket = new ServerSocket(puerto);
 			System.out.println("Servidor de Sincronización de Envío iniciado en el puerto " + puerto);
