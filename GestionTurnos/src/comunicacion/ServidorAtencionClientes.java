@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import vistas.VistaLogs;
+
 public class ServidorAtencionClientes implements Runnable{
 
 	private static ServidorAtencionClientes instance = null;
@@ -29,20 +31,20 @@ public class ServidorAtencionClientes implements Runnable{
 	@Override
 	public void run() {
 		try {
-
+			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				System.out.println("Servidor Atencion Cliente escuchando en puerto" + this.port);
+				vista.agregarElemento("Servidor Atencion Cliente escuchando en puerto " + this.port);
 
 				Socket clientSocket = serverSocket.accept();
-				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
 				BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 
 				String mensaje;
 				while ((mensaje = input.readLine()) != null) {
-					System.out.println("Numero de Box: " + mensaje);
+					vista.agregarElemento("Numero de Box: " + mensaje);
 					String result = gestionMensajesRecibidos.atenderCliente(mensaje);
 					output.println(result);
 				}

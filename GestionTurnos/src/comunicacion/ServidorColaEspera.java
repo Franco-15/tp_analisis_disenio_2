@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import vistas.VistaLogs;
+
 public class ServidorColaEspera implements Runnable{
 	private static ServidorColaEspera instance = null;
 	
@@ -28,12 +30,12 @@ public class ServidorColaEspera implements Runnable{
 	@Override
 	public void run() {
 		try {
-
+			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				System.out.println("Servidor Cola Espera escuchando en puerto" + this.port);
-
+				
 				Socket clientSocket = serverSocket.accept();
+				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
 				BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -41,7 +43,7 @@ public class ServidorColaEspera implements Runnable{
 
 				String mensaje;
 				while ((mensaje = input.readLine()) != null) {
-					System.out.println("Cliente con documento: " + mensaje);
+					vista.agregarElemento("Cliente con documento: " + mensaje);
 					String result = gestionMensajesRecibidos.agregarClienteAColaEspera(mensaje);
 					output.println(result);
 				}

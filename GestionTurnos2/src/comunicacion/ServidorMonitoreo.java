@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 
+import vistas.VistaLogs;
+
 public class ServidorMonitoreo implements Runnable {
 
 	private static ServidorMonitoreo instance = null;
@@ -29,21 +31,22 @@ public class ServidorMonitoreo implements Runnable {
 	@Override
 	public void run() {
 		try {
-
+			
+			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
-				System.out.println("Servidor Monitoreo escuchando en puerto" + this.puerto);
-				
+				vista.agregarElemento("Servidor Monitoreo escuchando en puerto " + this.puerto);
+
 				Socket clientSocket = serverSocket.accept();
-				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
 				ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
 				Map<String, Object> mensaje = (Map<String, Object>) input.readObject();
-				
+
 				if (mensaje != null) {
-					System.out.println("Cliente: " + mensaje);
+					vista.agregarElemento("Cliente: " + mensaje);
 					Map<String, Object> result = gestionMensajesRecibidos.actualizarMetricas();
 					output.writeObject(result);
 				}
@@ -53,7 +56,7 @@ public class ServidorMonitoreo implements Runnable {
 				clientSocket.close();
 				serverSocket.close();
 			}
-		} catch (IOException | ClassNotFoundException e ) {
+		} catch (IOException | ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 
