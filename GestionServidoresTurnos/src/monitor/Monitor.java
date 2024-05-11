@@ -16,6 +16,9 @@ public class Monitor implements Runnable{
 	private int checkSecondaryServerPort;
 	private Servidor servidorActivo;
 	private Servidor ultimoServidorActivo;
+	
+	private int puertoSincronizacionPrimario;
+	private int puertoSincronizacionSecundario;
 
 	private Monitor() {
 		this.servidorPrimarioGestionTurnos = new Servidor("gestionTurnos1", "localhost", 1, 3, 2);
@@ -24,6 +27,8 @@ public class Monitor implements Runnable{
 		this.checkSecondaryServerPort = 17;
 		this.servidorActivo = this.servidorPrimarioGestionTurnos;
 		this.ultimoServidorActivo = this.servidorPrimarioGestionTurnos;
+		this.puertoSincronizacionPrimario=16;
+		this.puertoSincronizacionSecundario = 18;
 	}
 
 	public static Monitor getInstance() {
@@ -51,16 +56,19 @@ public class Monitor implements Runnable{
 				}
 				else if (servidorSecundarioGestionTurnos.getEstado()) {
 					int puertoAux = this.checkPrimaryServerPort;
+					int puertoSincroAux=this.puertoSincronizacionPrimario;
 					Servidor servidorAux = new Servidor("gestionTurnos1", "localhost", 1, 3, 2);
 					this.servidorSecundarioGestionTurnos.setUltimaVezActivo(LocalDateTime.now());
 					this.servidorActivo = this.servidorSecundarioGestionTurnos;
 					this.ultimoServidorActivo = this.servidorSecundarioGestionTurnos;
+					this.puertoSincronizacionPrimario=this.puertoSincronizacionSecundario;
+					
 					
 					this.servidorPrimarioGestionTurnos = this.servidorSecundarioGestionTurnos;
 					this.checkPrimaryServerPort = this.checkSecondaryServerPort;
 					this.servidorSecundarioGestionTurnos = servidorAux;
 					this.checkSecondaryServerPort = puertoAux;
-					
+					this.puertoSincronizacionSecundario=puertoSincroAux;
 					System.out.println("El servidor secundario está activo");
 				}
 				else {
@@ -150,4 +158,14 @@ public class Monitor implements Runnable{
 		
 		return port;
 	}
+
+	public int getPuertoSincronizacionPrimario() {
+		return puertoSincronizacionPrimario;
+	}
+
+	public int getPuertoSincronizacionSecundario() {
+		return puertoSincronizacionSecundario;
+	}
+
+
 }
