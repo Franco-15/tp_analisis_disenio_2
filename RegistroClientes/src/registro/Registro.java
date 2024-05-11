@@ -10,7 +10,7 @@ public class Registro {// extends Observable??
 	}
 
 	public String registrarCliente(String dni) {
-
+		publicacion = Comunicacion.getInstance();
 //		cliente = new Cliente(dni);
 		return publicacion.publicar(dni);
 	}

@@ -13,8 +13,7 @@ public class Controlador implements ActionListener {
 	private VistaRegistro vistaRegistro;
 	private VistaConfirmacionRegistro vistaConfirmacion;
 
-	public Controlador() {
-	}
+	public Controlador() {}
 
 	public void actionPerformed(ActionEvent e) {
 		String numeroDocumento = this.vistaRegistro.getDni();

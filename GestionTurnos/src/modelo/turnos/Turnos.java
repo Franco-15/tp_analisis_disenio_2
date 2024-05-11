@@ -2,11 +2,11 @@ package modelo.turnos;
 
 import java.util.Random;
 
+import comunes.IColaEspera;
+import comunes.TElementoColaEspera;
 import comunicacion.PublicacionNotificacion;
 import modelo.colaEspera.ColaClientesLlamados;
 import modelo.colaEspera.ColaEspera;
-import modelo.colaEspera.IColaEspera;
-import modelo.colaEspera.TElementoColaEspera;
 import modelo.metricas.Metricas;
 
 public class Turnos {

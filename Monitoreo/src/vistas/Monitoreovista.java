@@ -88,12 +88,12 @@ public class Monitoreovista extends JFrame {
 		if (metricasMap != null) {
 			labelClientesAtendidos.setText("Clientes Atendidos: " + metricasMap.get("Clientes atendidos"));
 			labelClientesNoAtendidos.setText("Clientes No Atendidos: " + metricasMap.get("Clientes no atendidos"));
-			labelTMaxEspera.setText("Tiempo Máximo de Espera: " + metricasMap.get("Tiempo máximo de espera"));
-			labelTMinEspera.setText("Tiempo Mínimo de Espera: " + metricasMap.get("Tiempo mínimo de espera"));
+			labelTMaxEspera.setText("Tiempo Máximo de Espera: " + metricasMap.get("Tiempo máximo de espera") + " m");
+			labelTMinEspera.setText("Tiempo Mínimo de Espera: " + metricasMap.get("Tiempo mínimo de espera") + " m");
 			labelClientesEnEspera.setText("Clientes en Espera: " + metricasMap.get("Clientes en espera"));
 			labelTiempoPromedioEspera
-					.setText("Tiempo Promedio de Espera: " + metricasMap.get("Tiempo promedio de espera"));
-			labelTiempoTotalEspera.setText("Tiempo Total de Espera: " + metricasMap.get("Tiempo total de espera"));
+					.setText("Tiempo Promedio de Espera: " + String.format("%.2f s",metricasMap.get("Tiempo promedio de espera")) + " m");
+			labelTiempoTotalEspera.setText("Tiempo Total de Espera: " + metricasMap.get("Tiempo total de espera") + " m");
 			labelCantClientes.setText("Cantidad de Clientes: " + metricasMap.get("Cantidad total de clientes"));
 		}
 		else

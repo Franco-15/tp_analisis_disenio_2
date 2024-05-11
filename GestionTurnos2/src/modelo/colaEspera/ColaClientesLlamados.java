@@ -3,6 +3,9 @@ package modelo.colaEspera;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import comunes.IColaEspera;
+import comunes.TElementoColaEspera;
+
 public class ColaClientesLlamados implements IColaEspera{
 	private static ColaClientesLlamados instance = null;
 	

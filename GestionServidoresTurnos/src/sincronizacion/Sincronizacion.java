@@ -1,12 +1,11 @@
 package sincronizacion;
 
 import java.io.IOException;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import modelo.colaEspera.IColaEspera;
+import comunes.DatosSincronizacion;
 import monitor.Monitor;
 import monitor.Servidor;
 
@@ -40,47 +39,46 @@ public class Sincronizacion implements Runnable {
 			boolean servidorSecundarioIsActive = monitor.getServidorSecundarioGestionTurnos().getEstado();
 			Servidor ultimoServidorActivo = monitor.getUltimoServidorActivo();
 			Servidor servidorASincronizar = null;
-			int puertoGetCola;
+			int puertoGetDatos;
 			int puertoSincronizacion;
 
 			if (servidorPrimarioIsActive && servidorSecundarioIsActive) {
 
 				if (ultimoServidorActivo == monitor.getServidorPrimarioGestionTurnos()) {
-					puertoGetCola = monitor.getPuertoSincronizacionPrimario();
+					puertoGetDatos = monitor.getPuertoSincronizacionPrimario();
 					puertoSincronizacion = monitor.getPuertoSincronizacionSecundario();
 					servidorASincronizar = monitor.getServidorSecundarioGestionTurnos();
 				} else {
-					puertoGetCola = monitor.getPuertoSincronizacionSecundario();
+					puertoGetDatos = monitor.getPuertoSincronizacionSecundario();
 					puertoSincronizacion = monitor.getPuertoSincronizacionPrimario();
 					servidorASincronizar = monitor.getServidorPrimarioGestionTurnos();
 				}
 
-				IColaEspera colaEspera = null;
+				DatosSincronizacion datosSincronizacion = null;
 				try {
-					Socket socketGetCola;
+					Socket socketGetDatos;
 					
 					System.out.println("Obteniendo cola de servidor: "+ ultimoServidorActivo.getNombre());
-					socketGetCola = new Socket(ultimoServidorActivo.getDireccionIP(), puertoGetCola);
+					socketGetDatos = new Socket(ultimoServidorActivo.getDireccionIP(), puertoGetDatos);
 
-					ObjectOutputStream outputGetDatos = new ObjectOutputStream(socketGetCola.getOutputStream());
-					ObjectInputStream inputGetDatos = new ObjectInputStream(socketGetCola.getInputStream());
+					ObjectOutputStream outputGetDatos = new ObjectOutputStream(socketGetDatos.getOutputStream());
+					ObjectInputStream inputGetDatos = new ObjectInputStream(socketGetDatos.getInputStream());
 
 					// Enviar solicitud de publicación
 					outputGetDatos.writeObject("getDatos");
 
 					// Recibir el número de puerto del servidor destino
-					colaEspera = (IColaEspera) inputGetDatos.readObject();
-					System.out.println(colaEspera);
+					datosSincronizacion = (DatosSincronizacion) inputGetDatos.readObject();
 
 					// Cerrar conexión con el servidor monitor
 					inputGetDatos.close();
 					outputGetDatos.close();
-					socketGetCola.close();
+					socketGetDatos.close();
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println(e.getMessage());
 				}
 
-				if (colaEspera != null) {
+				if (datosSincronizacion != null) {
 					// Conectar al servidor destino para publicar el mensaje
 					Socket socketSincronizacion;
 					try {
@@ -92,7 +90,7 @@ public class Sincronizacion implements Runnable {
 								socketSincronizacion.getInputStream());
 
 						// Publicar el mensaje
-						outputSincronizacion.writeObject(colaEspera);
+						outputSincronizacion.writeObject(datosSincronizacion);
 						String response = (String) inputSincronizacion.readObject();
 						System.out.println(response);
 

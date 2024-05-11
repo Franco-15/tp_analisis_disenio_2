@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import comunes.IColaEspera;
+import comunes.TElementoColaEspera;
+
 public class ColaEspera implements IColaEspera, Serializable{
 	/**
 	 * 

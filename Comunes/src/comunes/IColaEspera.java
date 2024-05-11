@@ -1,4 +1,4 @@
-package modelo.colaEspera;
+package comunes;
 
 import java.util.Queue;
 

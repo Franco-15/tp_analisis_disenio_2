@@ -1,4 +1,4 @@
-package modelo.metricas;
+package comunes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -13,4 +13,5 @@ public interface IMetricas {
 	public void actualizarTiempoPromedioEspera();
 	public void actualizarCantidadClientesRegistrados(int cantidad);
 	public Map<String, Object> obtenerMetricas();
+	public void setMetricas(Map<String, Object> metricas);
 }

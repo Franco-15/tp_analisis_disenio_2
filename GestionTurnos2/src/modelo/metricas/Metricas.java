@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Metricas implements IMetricas{
+import comunes.IMetricas;
+
+public class Metricas implements IMetricas {
 
 	private static Metricas instance = null;
 
@@ -92,12 +94,12 @@ public class Metricas implements IMetricas{
 	}
 
 	public void actualizarTMinEspera(LocalDateTime fechaLlegada) {
-		
+
 		LocalDateTime horaActual = LocalDateTime.now();
 		Duration duracion = Duration.between(fechaLlegada, horaActual);
 		int esperaEnMinutos = (int) duracion.toMinutes();
 
-		if ( this.tMinEspera== -1 || this.tMinEspera > esperaEnMinutos)
+		if (this.tMinEspera == -1 || this.tMinEspera > esperaEnMinutos)
 			this.tMinEspera = esperaEnMinutos;
 	}
 
@@ -126,13 +128,33 @@ public class Metricas implements IMetricas{
 	public Map<String, Object> obtenerMetricas() {
 		this.metricasMap.put("Clientes atendidos", this.clientesAtendidos);
 		this.metricasMap.put("Clientes no atendidos", this.clientesNoAtendidos);
-		this.metricasMap.put("Tiempo máximo de espera", this.tMaxEspera + " m");
-		this.metricasMap.put("Tiempo mínimo de espera", this.tMinEspera + " m");
+		this.metricasMap.put("Tiempo máximo de espera", this.tMaxEspera);
+		this.metricasMap.put("Tiempo mínimo de espera", this.tMinEspera);
 		this.metricasMap.put("Clientes en espera", this.clientesEnEspera);
-		this.metricasMap.put("Tiempo promedio de espera", String.format("%.2f s", this.tiempoPromedioEspera));																						// decimales
-		this.metricasMap.put("Tiempo total de espera", this.tiempoTotalEspera + " m");
+		this.metricasMap.put("Tiempo promedio de espera", this.tiempoPromedioEspera); // decimales
+		this.metricasMap.put("Tiempo total de espera", this.tiempoTotalEspera);
 		this.metricasMap.put("Cantidad total de clientes", this.cantTotalClientesRegistrados);
 
 		return metricasMap;
+	}
+
+	public void setMetricas(Map<String, Object> metricas) {
+		System.out.println(metricas.get("Clientes atendidos"));
+		System.out.println(metricas.get("Clientes no atendidos"));
+		System.out.println(metricas.get("Tiempo máximo de espera"));
+		System.out.println(metricas.get("Tiempo mínimo de espera"));
+		System.out.println(metricas.get("Clientes en espera"));
+		System.out.println(metricas.get("Tiempo promedio de espera"));
+		System.out.println(metricas.get("Tiempo total de espera"));
+		System.out.println(metricas.get("Cantidad total de clientes"));
+
+		this.clientesAtendidos = (int) metricas.get("Clientes atendidos");
+		this.clientesNoAtendidos = (int) metricas.get("Clientes no atendidos");
+		this.tMaxEspera = (int) metricas.get("Tiempo máximo de espera");
+		this.tMinEspera = (int) metricas.get("Tiempo mínimo de espera");
+		this.clientesEnEspera = (int) metricas.get("Clientes en espera");
+		this.tiempoPromedioEspera = (float) metricas.get("Tiempo promedio de espera"); // decimales
+		this.tiempoTotalEspera = (float) metricas.get("Tiempo total de espera");
+		this.cantTotalClientesRegistrados = (int) metricas.get("Cantidad total de clientes");
 	}
 }

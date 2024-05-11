@@ -6,7 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import modelo.colaEspera.IColaEspera;
+import comunes.DatosSincronizacion;
+import comunes.IColaEspera;
 
 public class ServidorSincronizacion implements Runnable {
 
@@ -44,11 +45,12 @@ public class ServidorSincronizacion implements Runnable {
 				Object mensaje = (Object) input.readObject();
 
 				if (mensaje != null) {
-					if (mensaje.equals("getCola")) {
-						IColaEspera result = gestionMensajesRecibidos.getCola();
+					if (mensaje.equals("getDatos")) {
+						DatosSincronizacion result = gestionMensajesRecibidos.getDatosSincronizacion();
 						output.writeObject(result);
 					}else {
-						gestionMensajesRecibidos.setColaEspera((IColaEspera)mensaje);
+						System.out.println("Entro aca");
+						gestionMensajesRecibidos.setDatosSincronizacion((DatosSincronizacion)mensaje);
 						output.writeObject("Sincronizacion exitosa!");
 					}
 				}
