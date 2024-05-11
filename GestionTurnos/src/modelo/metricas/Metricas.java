@@ -139,15 +139,6 @@ public class Metricas implements IMetricas {
 	}
 
 	public void setMetricas(Map<String, Object> metricas) {
-		System.out.println(metricas.get("Clientes atendidos"));
-		System.out.println(metricas.get("Clientes no atendidos"));
-		System.out.println(metricas.get("Tiempo máximo de espera"));
-		System.out.println(metricas.get("Tiempo mínimo de espera"));
-		System.out.println(metricas.get("Clientes en espera"));
-		System.out.println(metricas.get("Tiempo promedio de espera"));
-		System.out.println(metricas.get("Tiempo total de espera"));
-		System.out.println(metricas.get("Cantidad total de clientes"));
-
 		this.clientesAtendidos = (int) metricas.get("Clientes atendidos");
 		this.clientesNoAtendidos = (int) metricas.get("Clientes no atendidos");
 		this.tMaxEspera = (int) metricas.get("Tiempo máximo de espera");
