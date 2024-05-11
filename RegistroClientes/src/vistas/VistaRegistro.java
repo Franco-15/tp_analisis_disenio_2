@@ -1,7 +1,6 @@
 package vistas;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
@@ -17,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import registro.Response;
 
-public class VistaRegistro extends JFrame  {
+public class VistaRegistro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -28,8 +27,6 @@ public class VistaRegistro extends JFrame  {
 	private JLabel lblNewLabel_3;
 	private JTextField textField_numero_dni;
 	private JButton btn_registrarse;
-	private VistaConfirmacionRegistro dialog;
-	private ActionListener actionListener;
 
 	/**
 	 * Create the frame.
@@ -89,10 +86,11 @@ public class VistaRegistro extends JFrame  {
 	public String getDni() {
 		return this.textField_numero_dni.getText();
 	}
-	
+
 	public void borroPanel() {
 		this.textField_numero_dni.setText("");
 	}
+
 	public void mostrarResultadoRegistro(String resultado) {
 		if (resultado.equals("0"))
 			JOptionPane.showMessageDialog(this, Response.RegistroExistoso, "Registro Exitoso",
@@ -102,19 +100,14 @@ public class VistaRegistro extends JFrame  {
 					JOptionPane.WARNING_MESSAGE);
 		else if (resultado.equals("2"))
 			JOptionPane.showMessageDialog(this, Response.ErrorDeSistema, "Error de Sistema", JOptionPane.ERROR_MESSAGE);
-
 	}
-
-
 
 	public void dniNoValido() {
 		JOptionPane.showMessageDialog(this, "El documento ingresado no es válido.", "Documento inválido",
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-
 	public void setActionListener(ActionListener actionListener) {
 		this.btn_registrarse.addActionListener(actionListener);
-		this.actionListener=actionListener;
 	}
 }

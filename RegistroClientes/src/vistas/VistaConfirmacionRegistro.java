@@ -12,8 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import controlador.Controlador;
-
 public class VistaConfirmacionRegistro extends JDialog {
 	/**
 	 * 

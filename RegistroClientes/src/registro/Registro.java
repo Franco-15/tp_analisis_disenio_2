@@ -1,10 +1,10 @@
 package registro;
 
-import comunicacion.PublicacionRegistro;
+import comunicacion.Comunicacion;
 
-public class Registro {//extends Observable??
+public class Registro {// extends Observable??
 //	private ICliente cliente;
-	private PublicacionRegistro publicacion = PublicacionRegistro.getInstance();
+	private Comunicacion publicacion;
 
 	public Registro() {
 	}

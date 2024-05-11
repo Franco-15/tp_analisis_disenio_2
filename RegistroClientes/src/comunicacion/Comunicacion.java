@@ -6,19 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class PublicacionRegistro {
-	private static PublicacionRegistro instance = null;
+public class Comunicacion {
+	private static Comunicacion instance = null;
 	private String ipMonitor;
 	private int portMonitor;
 
-	private PublicacionRegistro(String ipMonitor, int portMonitor) {
+	private Comunicacion(String ipMonitor, int portMonitor) {
 		this.ipMonitor = ipMonitor;
 		this.portMonitor = portMonitor;
 	}
 
-	public static PublicacionRegistro getInstance() {
+	public static Comunicacion getInstance() {
 		if (instance == null)
-			instance = new PublicacionRegistro("localhost", 10); // Definir el puerto del servidor monitor
+			instance = new Comunicacion("localhost", 10); // Definir el puerto del servidor monitor
 
 		return instance;
 	}
