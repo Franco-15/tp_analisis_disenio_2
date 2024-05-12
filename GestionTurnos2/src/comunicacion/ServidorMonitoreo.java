@@ -30,12 +30,11 @@ public class ServidorMonitoreo implements Runnable {
 
 	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
-			
-			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
-				vista.agregarElemento("Servidor Monitoreo escuchando en puerto " + this.puerto);
+				vista.agregarElemento("Servidor monitoreo escuchando en puerto " + this.puerto);
 
 				Socket clientSocket = serverSocket.accept();
 				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
@@ -57,7 +56,7 @@ public class ServidorMonitoreo implements Runnable {
 				serverSocket.close();
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
 
 	}

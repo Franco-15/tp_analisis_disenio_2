@@ -9,7 +9,7 @@ import java.net.Socket;
 
 import vistas.VistaLogs;
 
-public class ServidorAtencionClientes implements Runnable{
+public class ServidorAtencionClientes implements Runnable {
 
 	private static ServidorAtencionClientes instance = null;
 
@@ -30,11 +30,11 @@ public class ServidorAtencionClientes implements Runnable{
 
 	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
-			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				vista.agregarElemento("Servidor Atencion Cliente escuchando en puerto " + this.port);
+				vista.agregarElemento("Servidor atencion cliente escuchando en puerto " + this.port);
 
 				Socket clientSocket = serverSocket.accept();
 				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
@@ -44,7 +44,7 @@ public class ServidorAtencionClientes implements Runnable{
 
 				String mensaje;
 				while ((mensaje = input.readLine()) != null) {
-					vista.agregarElemento("Numero de Box: " + mensaje);
+					vista.agregarElemento("Petición de cliente recibida desde el box número: " + mensaje);
 					String result = gestionMensajesRecibidos.atenderCliente(mensaje);
 					output.println(result);
 				}
@@ -55,8 +55,8 @@ public class ServidorAtencionClientes implements Runnable{
 				serverSocket.close();
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
-		
+
 	}
 }

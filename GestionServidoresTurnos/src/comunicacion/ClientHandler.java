@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import monitor.Monitor;
+import vistas.VistaLogs;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
@@ -19,6 +20,7 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
         try {
 			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -32,7 +34,7 @@ public class ClientHandler implements Runnable {
 			output.close();
 			clientSocket.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+        	vista.agregarElemento(e.getMessage());
         }
     }
 }

@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import vistas.VistaLogs;
+
 public class ServidorMonitorGestionTurnos implements Runnable {
 
 	private static ServidorMonitorGestionTurnos instance = null;
@@ -26,13 +28,14 @@ public class ServidorMonitorGestionTurnos implements Runnable {
 
 	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				System.out.println("Servidor Monitoreo de Gestion Turnos escuchando en puerto " + this.port);
+				vista.agregarElemento("Servidor monitor de gestion de turnos escuchando en puerto " + this.port);
 
 				Socket clientSocket = serverSocket.accept();
-				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName() + ":" + clientSocket.getLocalPort());
+				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName() + ":" + clientSocket.getLocalPort());
 
 				BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -40,7 +43,7 @@ public class ServidorMonitorGestionTurnos implements Runnable {
 				String mensaje = input.readLine();
 
 				if(mensaje != null) {
-					System.out.println("Servidor Gestion Turnos se encuentra activo");
+					vista.agregarElemento("El servidor gestion de turnos se encuentra activo");
 					output.println("active");
 				}
 
@@ -50,7 +53,7 @@ public class ServidorMonitorGestionTurnos implements Runnable {
 				serverSocket.close();
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
 	}
 }

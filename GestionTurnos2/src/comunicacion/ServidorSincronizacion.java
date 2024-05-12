@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import comunes.DatosSincronizacion;
-import comunes.IColaEspera;
+import vistas.VistaLogs;
 
 public class ServidorSincronizacion implements Runnable {
 
@@ -30,14 +30,14 @@ public class ServidorSincronizacion implements Runnable {
 
 	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
-
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
-				System.out.println("Servidor sincronizacion escuchando en puerto" + this.puerto);
+				vista.agregarElemento("Servidor sincronizacion escuchando en puerto" + this.puerto);
 
 				Socket clientSocket = serverSocket.accept();
-				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
 				ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -49,7 +49,6 @@ public class ServidorSincronizacion implements Runnable {
 						DatosSincronizacion result = gestionMensajesRecibidos.getDatosSincronizacion();
 						output.writeObject(result);
 					}else {
-						System.out.println("Entro aca");
 						gestionMensajesRecibidos.setDatosSincronizacion((DatosSincronizacion)mensaje);
 						output.writeObject("Sincronizacion exitosa!");
 					}
@@ -61,7 +60,7 @@ public class ServidorSincronizacion implements Runnable {
 				serverSocket.close();
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
 
 	}

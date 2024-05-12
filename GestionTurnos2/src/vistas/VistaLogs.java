@@ -31,7 +31,7 @@ public class VistaLogs extends JFrame {
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(null);
 		
-		this.lblNewLabel = new JLabel("Logs Sistema");
+		this.lblNewLabel = new JLabel("Logs servidor 2 de gestión de turnos");
 		this.lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 15));
 		this.lblNewLabel.setBounds(10, 11, 414, 30);
 		this.contentPane.add(this.lblNewLabel);
@@ -55,5 +55,8 @@ public class VistaLogs extends JFrame {
 
 	public void agregarElemento(String elemento) {
 		this.modeloLista.addElement(elemento);
+		if(modeloLista.getSize()>50) {
+			modeloLista.remove(0);
+		}
 	}
 }

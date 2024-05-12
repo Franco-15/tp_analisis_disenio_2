@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalDateTime;
 
+import vistas.VistaLogs;
+
 public class Monitor implements Runnable{
 	private static Monitor instance = null;
 	private Servidor servidorPrimarioGestionTurnos;
@@ -19,6 +21,8 @@ public class Monitor implements Runnable{
 	
 	private int puertoSincronizacionPrimario;
 	private int puertoSincronizacionSecundario;
+	
+	private VistaLogs vista;
 
 	private Monitor() {
 		this.servidorPrimarioGestionTurnos = new Servidor("gestionTurnos1", "localhost", 1, 3, 2);
@@ -29,6 +33,7 @@ public class Monitor implements Runnable{
 		this.ultimoServidorActivo = this.servidorPrimarioGestionTurnos;
 		this.puertoSincronizacionPrimario=16;
 		this.puertoSincronizacionSecundario = 18;
+		this.vista = VistaLogs.getInstance();
 	}
 
 	public static Monitor getInstance() {
@@ -42,14 +47,14 @@ public class Monitor implements Runnable{
 		try {
 			while (true) {
 
-				System.out.println("Analizando estado de los servidores...");
+				vista.agregarElemento("Analizando estado de los servidores...");
 
 				servidorPrimarioGestionTurnos.setEstado(isServerActive(servidorPrimarioGestionTurnos, this.checkPrimaryServerPort));
 				servidorSecundarioGestionTurnos
 						.setEstado(isServerActive(servidorSecundarioGestionTurnos, this.checkSecondaryServerPort));
 				
 				if (servidorPrimarioGestionTurnos.getEstado()) {
-					System.out.println("El servidor primario está activo");
+					vista.agregarElemento("El servidor primario está activo");
 					this.servidorPrimarioGestionTurnos.setUltimaVezActivo(LocalDateTime.now());
 					this.servidorActivo = servidorPrimarioGestionTurnos;
 					this.ultimoServidorActivo = servidorPrimarioGestionTurnos;
@@ -73,10 +78,10 @@ public class Monitor implements Runnable{
 					this.servidorSecundarioGestionTurnos = servidorAux;
 					this.checkSecondaryServerPort = puertoAux;
 					this.puertoSincronizacionSecundario=puertoSincroAux;
-					System.out.println("El servidor secundario está activo");
+					vista.agregarElemento("El servidor secundario está activo");
 				}
 				else {
-					System.out.println("No existe ningún servidor activo");
+					vista.agregarElemento("No existe ningún servidor activo");
 					this.servidorActivo = null;
 					if(servidorPrimarioGestionTurnos.getUltimaVezActivo().isAfter(servidorSecundarioGestionTurnos.getUltimaVezActivo()))
 						this.ultimoServidorActivo = servidorPrimarioGestionTurnos;
@@ -137,7 +142,7 @@ public class Monitor implements Runnable{
 
 			if (!isConnected) {
 				retryCount++;
-				System.out.println("Reintentando conexión a servidor " + servidor.getDireccionIP() + ":" + serverPort
+				vista.agregarElemento("Reintentando conexión a servidor " + servidor.getDireccionIP() + ":" + serverPort
 						+ " (" + retryCount + "/" + maxRetries + ")");
 				try {
 					Thread.sleep(1000); // Esperar antes de intentar nuevamente

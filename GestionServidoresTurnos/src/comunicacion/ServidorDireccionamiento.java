@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import monitor.Monitor;
+import vistas.VistaLogs;
 
 public class ServidorDireccionamiento implements Runnable{
 	private static ServidorDireccionamiento instance = null;
@@ -24,22 +25,22 @@ public class ServidorDireccionamiento implements Runnable{
 		return instance;
 	}
 
-	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
 
 			this.serverSocket = new ServerSocket(this.port);
-			System.out.println("Servidor de Direccionamiento escuchando en puerto " + this.port);
+			vista.agregarElemento("Servidor de Direccionamiento escuchando en puerto " + this.port);
 			
 	        while (true) {
 	            Socket clientSocket = serverSocket.accept();
-				System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+	            vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 	            Thread clientThread = new Thread(new ClientHandler(clientSocket, monitor));
 	            clientThread.start();
 	        }
 			
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
 		
 	}

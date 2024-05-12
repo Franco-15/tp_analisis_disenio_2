@@ -8,6 +8,7 @@ import java.net.Socket;
 import comunes.DatosSincronizacion;
 import monitor.Monitor;
 import monitor.Servidor;
+import vistas.VistaLogs;
 
 public class Sincronizacion implements Runnable {
 
@@ -31,10 +32,10 @@ public class Sincronizacion implements Runnable {
 	@Override
 	public void run() {
 		
-		
+		VistaLogs vista = VistaLogs.getInstance();
 		while (true) {
 
-			System.out.println("Sincronizando servidores...");
+			vista.agregarElemento("Sincronizando servidores...");
 			boolean servidorPrimarioIsActive = monitor.getServidorPrimarioGestionTurnos().getEstado();
 			boolean servidorSecundarioIsActive = monitor.getServidorSecundarioGestionTurnos().getEstado();
 			Servidor ultimoServidorActivo = monitor.getUltimoServidorActivo();
@@ -58,7 +59,7 @@ public class Sincronizacion implements Runnable {
 				try {
 					Socket socketGetDatos;
 					
-					System.out.println("Obteniendo cola de servidor: "+ ultimoServidorActivo.getNombre());
+					vista.agregarElemento("Obteniendo cola de servidor: "+ ultimoServidorActivo.getNombre());
 					socketGetDatos = new Socket(ultimoServidorActivo.getDireccionIP(), puertoGetDatos);
 
 					ObjectOutputStream outputGetDatos = new ObjectOutputStream(socketGetDatos.getOutputStream());
@@ -75,7 +76,7 @@ public class Sincronizacion implements Runnable {
 					outputGetDatos.close();
 					socketGetDatos.close();
 				} catch (IOException | ClassNotFoundException e) {
-					System.out.println(e.getMessage());
+					vista.agregarElemento(e.getMessage());
 				}
 
 				if (datosSincronizacion != null) {
@@ -92,25 +93,25 @@ public class Sincronizacion implements Runnable {
 						// Publicar el mensaje
 						outputSincronizacion.writeObject(datosSincronizacion);
 						String response = (String) inputSincronizacion.readObject();
-						System.out.println(response);
+						vista.agregarElemento(response);
 
 						// Cerrar conexión con el servidor destino
 						inputSincronizacion.close();
 						outputSincronizacion.close();
 						socketSincronizacion.close();
 					} catch (IOException | ClassNotFoundException e) {
-						System.out.println(e.getMessage());
+						vista.agregarElemento(e.getMessage());
 					}
 				}
 			}
 			else if(!servidorSecundarioIsActive) {}
 			else
-				System.out.println("Los servidores no estan disponibles para realizar la sincronizacion");
+				vista.agregarElemento("Los servidores no estan disponibles para realizar la sincronizacion");
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
+				vista.agregarElemento(e.getMessage());
 			}
 		}
 

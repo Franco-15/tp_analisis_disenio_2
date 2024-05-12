@@ -29,11 +29,11 @@ public class ServidorColaEspera implements Runnable{
 
 	@Override
 	public void run() {
+		VistaLogs vista = VistaLogs.getInstance();
 		try {
-			VistaLogs vista = VistaLogs.getInstance();
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.port);
-				vista.agregarElemento("Servidor Cola Espera escuchando en puerto " + this.port);
+				vista.agregarElemento("Servidor cola de espera escuchando en puerto " + this.port);
 				
 				Socket clientSocket = serverSocket.accept();
 				
@@ -55,7 +55,7 @@ public class ServidorColaEspera implements Runnable{
 				serverSocket.close();
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			vista.agregarElemento(e.getMessage());
 		}
 		
 	}
