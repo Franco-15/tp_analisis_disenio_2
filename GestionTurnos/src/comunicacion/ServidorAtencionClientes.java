@@ -5,41 +5,50 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Random;
+
+import comunes.MensajeAtencionCliente;
+
+
+
 
 public class ServidorAtencionClientes {
+    
 	
-	private static ServidorAtencionClientes instance = null;
-	private GestionRecepcionServidor gestionMensajesRecibidos;
-	
-	
-	public ServidorAtencionClientes() {
-		this.gestionMensajesRecibidos = new GestionRecepcionServidor();
-		   // Define los puertos en los que quieres que el servidor escuche
-        int[] puertos = {6001, 6002, 6003,6004,6005,6006,6007,6008};
+	 public ServidorAtencionClientes (int[] puertos) {
+	        // Iniciar un hilo por cada puerto para ejecutar ServidorRunnable
+	        for (int puerto : puertos) {
+	            Thread servidorThread = new Thread(new ServidorRunnable(puerto));
+	            servidorThread.start();
+	        }
+	    }
 
-        // Iniciar un hilo por cada puerto para ejecutar ServidorRunnable
-        for (int puerto : puertos) {
-            Thread servidorThread = new Thread(new ServidorRunnable(puerto));
-            servidorThread.start();
-        }
-	}
-	
-	public static ServidorAtencionClientes getInstance() {
-		if (instance == null)
-			instance = new ServidorAtencionClientes();
-
-		return instance;
-	}
-	
 
     private static class ServidorRunnable implements Runnable {
         private int puerto;
         private ServerSocket serverSocket;
+    	private GestionRecepcionServidor gestionMensajesRecibidos;
 
         public ServidorRunnable(int puerto) {
             this.puerto = puerto;
+            this.gestionMensajesRecibidos = new GestionRecepcionServidor();
         }
-
+        
+     public String cargar_mensaje() {
+		
+    	 //buscar en la cola de espera y devolver
+    	 return null;
+     }
+     
+     
         @Override
         public void run() {
             try {
@@ -51,23 +60,41 @@ public class ServidorAtencionClientes {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("Cliente conectado al puerto " + puerto + " desde " + clientSocket.getInetAddress().getHostAddress());
 
-                    // Crear flujos de entrada y salida para comunicarse con el cliente
-                    BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+                 // Crear ObjectOutputStream para enviar objetos
+                    ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+
+                    // Crear ObjectInputStream para recibir objetos
+                    ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
+                    
 
                     // Mantener el servidor corriendo para intercambiar información
                     while (true) {
                         // Leer mensaje del cliente
-                        String mensajeCliente = input.readLine();
-                        System.out.println("Mensaje recibido del cliente en el puerto " + puerto + ": " + mensajeCliente);
+                        //String mensajeCliente = input.readLine();
+                    	MensajeAtencionCliente mensaje = (MensajeAtencionCliente) objectInput.readObject();
 
-                        // Ejemplo de respuesta al cliente
-                        //output.println("Mensaje recibido: " + mensajeCliente);
+                    	System.out.println("Mensaje recibido del cliente en el puerto " + puerto + ": " + mensaje.getMensaje());
                         
-                        
-                        // Si necesitas lógica adicional aquí para procesar la información recibida del cliente
 
-                        // Aquí podrías salir del bucle si se cumple alguna condición, como si el cliente envía un mensaje especial para cerrar la conexión
+                        
+                        if(mensaje.getMensaje().equals("no llego")) {
+                        	System.out.println("el mensaje del objeto que volvio es :" + mensaje.getMensaje());
+                        	//
+                        }
+                        else
+                        if(mensaje.getMensaje().equals( "dame cliente")) {
+                        	//devolver el primer cliente en la cola
+                        	MensajeAtencionCliente respuesta = new MensajeAtencionCliente("", false, "");
+                        	String puertoString = String.valueOf(this.puerto);
+                        	String result = this.gestionMensajesRecibidos.atenderCliente(puertoString);
+                        	respuesta.setDni(result);
+                        	objectOutput.writeObject(respuesta);
+                        }
+                        else
+                        if(mensaje.getMensaje().equals("cliente aceptado")) {
+                        	System.out.println("el mensaje del objeto que volvio es :" + mensaje.getMensaje());
+                        	//
+                        }
                     }
                 }
             } catch (Exception e) {

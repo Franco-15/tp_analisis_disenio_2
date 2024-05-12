@@ -1,5 +1,6 @@
 package modelo.atencion;
 
+import comunes.MensajeAtencionCliente;
 import comunicacion.Comunicacion;
 import modelo.box.Box;
 
@@ -10,13 +11,12 @@ public class Atencion {
 		this.comunicacion = new Comunicacion("localhost",numero+6000);
 	}
 	
-	public String llamarCliente(Box box) {
-		String cliente = comunicacion.obtenerCliente("dame cliente");
-		System.out.println("aca llego con esto:" + cliente);
+	public MensajeAtencionCliente llamarCliente() {
+		MensajeAtencionCliente cliente = comunicacion.obtenerCliente();
 		return cliente;
 	}
 	
-	public void respuesta_cliente(Box box,String mensaje) {
-		this.comunicacion.respuesta_cliente(box.getNumero(),mensaje);
+	public void respuesta_cliente(MensajeAtencionCliente cliente) {
+		this.comunicacion.respuesta_cliente(cliente);
 	}
 }

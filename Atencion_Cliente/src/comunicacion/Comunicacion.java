@@ -3,16 +3,20 @@ package comunicacion;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import comunes.MensajeAtencionCliente;
 
 public class Comunicacion {
 	private String ip;
 	private int port;
 	private Socket socket = null;
-	private BufferedReader input;
-	private PrintWriter output;
+	private ObjectInputStream objectInput;  
+	private ObjectOutputStream objectoutput;
 	
 	public Comunicacion(String ip, int port) {
 		this.ip = ip;
@@ -21,8 +25,9 @@ public class Comunicacion {
 			if(this.socket == null)
 			this.socket = new Socket(this.ip, this.port);
             System.out.println("Conexión establecida con el servidor.");
-			 this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-	         this.output = new PrintWriter(this.socket.getOutputStream(), true);
+			 this.objectInput = new ObjectInputStream(socket.getInputStream());
+	         this.objectoutput = new ObjectOutputStream(socket.getOutputStream());
+	         
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,35 +37,33 @@ public class Comunicacion {
 		}
 	}
 
-	
 
 	
-	public String obtenerCliente(String mensaje) {
-	    String respuesta = ""; // Declaración fuera del bloque try
+	public MensajeAtencionCliente obtenerCliente() {
+	     MensajeAtencionCliente respuesta = null; // Declaración fuera del bloque try
 
-		try {
+	        try {
+	           MensajeAtencionCliente solicitud = new MensajeAtencionCliente("dame cliente", false, ""); 
+	           this.objectoutput.writeObject(solicitud);
+	           respuesta = (MensajeAtencionCliente) objectInput.readObject();
+	            System.out.println("Respuesta del servidor: " + respuesta);
+	            
+	        } catch (IOException | ClassNotFoundException e) {
+	            // Manejar IOException y ClassNotFoundException, por ejemplo, registrar el error
+	            System.out.println(e.getMessage());
+	        }
 
-			BufferedReader input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			PrintWriter output = new PrintWriter(this.socket.getOutputStream(), true);
+	        return respuesta;
+	    }
+	
+	public void respuesta_cliente(MensajeAtencionCliente cliente){
 
-			  // Enviar solicitud de publicación
-            output.println("dame cliente");
-
-            respuesta = input.readLine();        
-            System.out.println("Respuesta del servidor: " + respuesta);
-            
-            
-			
+        try {
+			this.objectoutput.writeObject(cliente);
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		return respuesta;
-	}
-	
-	public void respuesta_cliente(int box,String mensaje){
-        this.output.println(mensaje);
-        System.out.println("mensaje enviado: " + mensaje);
 
 	}
 }

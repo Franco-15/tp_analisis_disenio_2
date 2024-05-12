@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import comunes.MensajeAtencionCliente;
 import modelo.atencion.Atencion;
 import modelo.box.Box;
 import vistas.LoginEmpleado;
@@ -13,12 +14,13 @@ public class Controlador implements ActionListener{
 	private VentanaMainEmpleado vistaPrincipalEmpleado;
 	private Box boxAtencion;
 	private Atencion atencion;
-
+	private MensajeAtencionCliente Cliente_actual; 
 	
 	public Controlador() {
 		this.vistaLoginEmpleado = new LoginEmpleado();
 		this.vistaLoginEmpleado.setActionListener(this);
 		this.vistaLoginEmpleado.setVisible(true);
+		this.Cliente_actual = null;
 	}
  
 	@Override
@@ -40,30 +42,22 @@ public class Controlador implements ActionListener{
 		}
 		else if(e.getActionCommand().equals("LLAMAR CLIENTE")) {
 			if (this.vistaPrincipalEmpleado.get_cliente().isEmpty()) {
-			String proximoCliente = this.atencion.llamarCliente(this.boxAtencion);
-			System.out.println("proximo cliente" + proximoCliente);
-			if(proximoCliente.equals(""))
-				this.vistaPrincipalEmpleado.errorServidor();
-			else if(proximoCliente.equals("-1"))
-				this.vistaPrincipalEmpleado.noHayClienteParaAtender();
-			else
-				this.vistaPrincipalEmpleado.agregarCliente(proximoCliente);
+			MensajeAtencionCliente proximoCliente = this.atencion.llamarCliente();
+			this.Cliente_actual = proximoCliente;	
+			this.vistaPrincipalEmpleado.agregarCliente(proximoCliente.getDni());
 			}
 		}
 		else if(e.getActionCommand().equals("aceptar")) {
 			if (!this.vistaPrincipalEmpleado.get_cliente().isEmpty()) {
-				 System.out.println("acpetado cliente");
-				String mensaje = "aceptado";
-				this.atencion.respuesta_cliente(boxAtencion, mensaje);
+				this.Cliente_actual.setMensaje("cliente aceptado");
+				this.atencion.respuesta_cliente(this.Cliente_actual);
 				this.vistaPrincipalEmpleado.aceptar_cliente();
 			}
 		}
 		else if (e.getActionCommand().equals("no llego")) {
-			if (!this.vistaPrincipalEmpleado.get_cliente().isEmpty()) {
-			String mensaje = "no llego";
-			 System.out.println("no llego cliente");
-			 
-			this.atencion.respuesta_cliente(boxAtencion, mensaje);
+			if (!this.vistaPrincipalEmpleado.get_cliente().isEmpty()) {			
+			 this.Cliente_actual.setMensaje("no llego");
+			this.atencion.respuesta_cliente(this.Cliente_actual);
 			this.vistaPrincipalEmpleado.cliente_no_llego();
 		}
 			}

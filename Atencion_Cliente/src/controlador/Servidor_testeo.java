@@ -1,11 +1,16 @@
 package controlador;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.IOException;
 import java.util.Random;
+
+import comunes.MensajeAtencionCliente;
+
 
 
 
@@ -20,20 +25,7 @@ public class Servidor_testeo {
             servidorThread.start();
         }
     }
-    
-    public String devolver_dni() {
-        // Generar un número aleatorio
-        Random rand = new Random();
-        int numeroAleatorio = rand.nextInt(1000000000) + 1000000000; // Genera un número entre 1000000000 y 1999999999
 
-        // Convertir el número aleatorio a String
-        String numeroAleatorioString = String.valueOf(numeroAleatorio);
-        
-        // Imprimir el número aleatorio como String
-        System.out.println("Número aleatorio como String: " + numeroAleatorioString);
-        
-    	return null;
-    }
 
     private static class ServidorRunnable implements Runnable {
         private int puerto;
@@ -62,34 +54,40 @@ public class Servidor_testeo {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("Cliente conectado al puerto " + puerto + " desde " + clientSocket.getInetAddress().getHostAddress());
 
-                    // Crear flujos de entrada y salida para comunicarse con el cliente
-                    BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+                 // Crear ObjectOutputStream para enviar objetos
+                    ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+
+                    // Crear ObjectInputStream para recibir objetos
+                    ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
+
 
                     // Mantener el servidor corriendo para intercambiar información
                     while (true) {
                         // Leer mensaje del cliente
-                        String mensajeCliente = input.readLine();
-                        System.out.println("Mensaje recibido del cliente en el puerto " + puerto + ": " + mensajeCliente);
+                        //String mensajeCliente = input.readLine();
+                    	MensajeAtencionCliente mensaje = (MensajeAtencionCliente) objectInput.readObject();
+
+                    	System.out.println("Mensaje recibido del cliente en el puerto " + puerto + ": " + mensaje.getMensaje());
                         
 
                         
-                        if(mensajeCliente.equals("no llego")) {
-                        	//agregar a cola de espera o no eliminar
-                        	 // Ejemplo de respuesta al cliente
-                          	 System.out.println("Mensaje recibido: " + mensajeCliente);
+                        if(mensaje.getMensaje().equals("no llego")) {
+                        	System.out.println("el mensaje del objeto que volvio es :" + mensaje.getMensaje());
+                        	//
                         }
                         else
-                        if(mensajeCliente.equals( "dame cliente")) {
+                        if(mensaje.getMensaje().equals( "dame cliente")) {
                         	//devolver el primer cliente en la cola
-                        	String paciente = "123";
-                        	output.println(paciente);
+                        	//String paciente = "123";
+                        	MensajeAtencionCliente respuesta = new MensajeAtencionCliente("", false, "123");
+                        	//se rellena la respuesta con los datos correspondientes
+                        	objectOutput.writeObject(respuesta);
                         }
                         else
-                        if(mensajeCliente.equals("cliente aceptado")) {
-                        	// devolver confirmacion 
+                        if(mensaje.getMensaje().equals("cliente aceptado")) {
+                        	System.out.println("el mensaje del objeto que volvio es :" + mensaje.getMensaje());
+                        	//
                         }
-                      
                     }
                 }
             } catch (Exception e) {

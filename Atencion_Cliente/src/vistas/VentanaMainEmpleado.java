@@ -15,7 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import java.awt.event.ActionEvent;
+
+import comunes.MensajeAtencionCliente;
+
 
 public class VentanaMainEmpleado extends JFrame {
 
@@ -116,8 +118,8 @@ public class VentanaMainEmpleado extends JFrame {
 		return this.numeroBox;
 	}
 
-	public void agregarCliente(String cliente) {
-		this.modeloLista_en_camino.addElement(cliente);
+	public void agregarCliente(String dni) {
+		this.modeloLista_en_camino.addElement(dni);
 		this.list_clientes_en_camino.setModel(modeloLista_en_camino);
 	  
 	}

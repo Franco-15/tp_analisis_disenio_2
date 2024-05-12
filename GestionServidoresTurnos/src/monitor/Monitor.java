@@ -21,7 +21,7 @@ public class Monitor implements Runnable{
 	private int puertoSincronizacionSecundario;
 
 	private Monitor() {
-		this.servidorPrimarioGestionTurnos = new Servidor("gestionTurnos1", "localhost", 1, 3, 2);
+		this.servidorPrimarioGestionTurnos = new Servidor("gestionTurnos1", "localhost", 5001, 3, 2);
 		this.servidorSecundarioGestionTurnos = new Servidor("gestionTurnos2", "localhost", 7, 20, 21);
 		this.checkPrimaryServerPort = 13;
 		this.checkSecondaryServerPort = 17;
@@ -59,7 +59,7 @@ public class Monitor implements Runnable{
 					int puertoSincroAux=this.puertoSincronizacionPrimario;
 					Servidor servidorAux;
 					if(servidorActivo.getNombre().equals("gestionTurnos1"))
-						servidorAux = new Servidor("gestionTurnos1", "localhost", 1, 3, 2);
+						servidorAux = new Servidor("gestionTurnos1", "localhost", 5001, 3, 2);
 					else
 						servidorAux = new Servidor("gestionTurnos2", "localhost", 7, 20, 21);
 					this.servidorSecundarioGestionTurnos.setUltimaVezActivo(LocalDateTime.now());
