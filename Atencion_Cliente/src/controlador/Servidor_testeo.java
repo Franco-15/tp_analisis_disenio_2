@@ -1,20 +1,17 @@
-package comunicacion;
+package controlador;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.IOException;
+import java.util.Random;
 
-public class ServidorAtencionClientes {
-	
-	private static ServidorAtencionClientes instance = null;
-	private GestionRecepcionServidor gestionMensajesRecibidos;
-	
-	
-	public ServidorAtencionClientes() {
-		this.gestionMensajesRecibidos = new GestionRecepcionServidor();
-		   // Define los puertos en los que quieres que el servidor escuche
+
+
+public class Servidor_testeo {
+    public static void main(String[] args) {
+        // Define los puertos en los que quieres que el servidor escuche
         int[] puertos = {6001, 6002, 6003,6004,6005,6006,6007,6008};
 
         // Iniciar un hilo por cada puerto para ejecutar ServidorRunnable
@@ -22,24 +19,38 @@ public class ServidorAtencionClientes {
             Thread servidorThread = new Thread(new ServidorRunnable(puerto));
             servidorThread.start();
         }
-	}
-	
-	public static ServidorAtencionClientes getInstance() {
-		if (instance == null)
-			instance = new ServidorAtencionClientes();
+    }
+    
+    public String devolver_dni() {
+        // Generar un número aleatorio
+        Random rand = new Random();
+        int numeroAleatorio = rand.nextInt(1000000000) + 1000000000; // Genera un número entre 1000000000 y 1999999999
 
-		return instance;
-	}
-	
+        // Convertir el número aleatorio a String
+        String numeroAleatorioString = String.valueOf(numeroAleatorio);
+        
+        // Imprimir el número aleatorio como String
+        System.out.println("Número aleatorio como String: " + numeroAleatorioString);
+        
+    	return null;
+    }
 
     private static class ServidorRunnable implements Runnable {
         private int puerto;
         private ServerSocket serverSocket;
+    
 
         public ServidorRunnable(int puerto) {
             this.puerto = puerto;
         }
-
+        
+     public String cargar_mensaje() {
+		
+    	 //buscar en la cola de espera y devolver
+    	 return null;
+     }
+     
+     
         @Override
         public void run() {
             try {
@@ -60,14 +71,25 @@ public class ServidorAtencionClientes {
                         // Leer mensaje del cliente
                         String mensajeCliente = input.readLine();
                         System.out.println("Mensaje recibido del cliente en el puerto " + puerto + ": " + mensajeCliente);
-
-                        // Ejemplo de respuesta al cliente
-                        //output.println("Mensaje recibido: " + mensajeCliente);
                         
-                        
-                        // Si necesitas lógica adicional aquí para procesar la información recibida del cliente
 
-                        // Aquí podrías salir del bucle si se cumple alguna condición, como si el cliente envía un mensaje especial para cerrar la conexión
+                        
+                        if(mensajeCliente.equals("no llego")) {
+                        	//agregar a cola de espera o no eliminar
+                        	 // Ejemplo de respuesta al cliente
+                          	 System.out.println("Mensaje recibido: " + mensajeCliente);
+                        }
+                        else
+                        if(mensajeCliente.equals( "dame cliente")) {
+                        	//devolver el primer cliente en la cola
+                        	String paciente = "123";
+                        	output.println(paciente);
+                        }
+                        else
+                        if(mensajeCliente.equals("cliente aceptado")) {
+                        	// devolver confirmacion 
+                        }
+                      
                     }
                 }
             } catch (Exception e) {

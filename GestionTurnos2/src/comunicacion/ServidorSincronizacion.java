@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import comunes.DatosSincronizacion;
-import comunes.IColaEspera;
 
 public class ServidorSincronizacion implements Runnable {
 

@@ -3,7 +3,6 @@ package comunicacion;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import modelo.turnos.TElementoNotificacion;
 
@@ -21,7 +20,7 @@ public class PublicacionNotificacion {
 
 	public static PublicacionNotificacion getInstance() {
 		if (instance == null)
-			instance = new PublicacionNotificacion("localhost", 4);
+			instance = new PublicacionNotificacion("localhost", 5004);
 
 		return instance;
 	}

@@ -18,7 +18,7 @@ public class Comunicacion {
 
 	public static Comunicacion getInstance() {
 		if (instance == null)
-			instance = new Comunicacion("localhost", 10); // Definir el puerto del servidor monitor
+			instance = new Comunicacion("localhost", 5010); // Definir el puerto del servidor monitor
 
 		return instance;
 	}

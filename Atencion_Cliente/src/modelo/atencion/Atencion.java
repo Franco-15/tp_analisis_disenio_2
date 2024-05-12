@@ -6,12 +6,17 @@ import modelo.box.Box;
 public class Atencion {
 	private Comunicacion comunicacion;
 	
-	public Atencion() {}
+	public Atencion(int numero) {
+		this.comunicacion = new Comunicacion("localhost",numero+6000);
+	}
 	
 	public String llamarCliente(Box box) {
-		comunicacion = new Comunicacion("localhost", 10);
-		String cliente = comunicacion.obtenerCliente(String.valueOf(box.getNumero()));
-		
+		String cliente = comunicacion.obtenerCliente("dame cliente");
+		System.out.println("aca llego con esto:" + cliente);
 		return cliente;
+	}
+	
+	public void respuesta_cliente(Box box,String mensaje) {
+		this.comunicacion.respuesta_cliente(box.getNumero(),mensaje);
 	}
 }

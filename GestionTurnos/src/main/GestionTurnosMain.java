@@ -18,16 +18,16 @@ public class GestionTurnosMain {
 		ServidorSincronizacion servidorSincronizacion = ServidorSincronizacion.getInstance();
 		
 		Thread t1 = new Thread(servidorColaEspera);
-		Thread t2 = new Thread(servidorAtencionClientes);
+		//Thread t2 = new Thread((Runnable) servidorAtencionClientes);
 		Thread t3 = new Thread(servidorMonitoreo);
 		Thread t4 = new Thread(servidorMonitorGestionTurnos);
 		Thread t5 = new Thread(servidorSincronizacion);
 		
 		t1.start();
-		t2.start();
+		//t2.start();
 		t3.start();
 		t4.start();
 		t5.start();
-		
+	
 	}
 }

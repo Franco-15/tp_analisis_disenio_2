@@ -21,7 +21,7 @@ public class ServidorMonitoreo implements Runnable {
 
 	public static ServidorMonitoreo getInstance() {
 		if (instance == null)
-			instance = new ServidorMonitoreo(3);
+			instance = new ServidorMonitoreo(5003);
 
 		return instance;
 	}

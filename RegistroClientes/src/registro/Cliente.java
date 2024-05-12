@@ -2,7 +2,9 @@ package registro;
 
 public class Cliente implements ICliente {
 	private String dni;
-
+	private boolean fue_llamado;
+	
+	
 	public Cliente(String dni) {
 		this.dni = dni;
 	}
@@ -14,4 +16,6 @@ public class Cliente implements ICliente {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
+	
+	 
 }

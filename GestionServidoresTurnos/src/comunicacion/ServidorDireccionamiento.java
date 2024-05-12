@@ -19,7 +19,7 @@ public class ServidorDireccionamiento implements Runnable{
 	
 	public static ServidorDireccionamiento getInstance() {
 		if(instance == null)
-			instance = new ServidorDireccionamiento(10);
+			instance = new ServidorDireccionamiento(5010);
 		
 		return instance;
 	}
