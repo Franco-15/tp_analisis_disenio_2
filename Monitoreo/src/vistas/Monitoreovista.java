@@ -117,7 +117,7 @@ public class Monitoreovista extends JFrame {
 			labelTMinEspera.setText("Tiempo Mínimo de Espera: " + metricasMap.get("Tiempo mínimo de espera") + " m");
 			labelClientesEnEspera.setText("Clientes en Espera: " + metricasMap.get("Clientes en espera"));
 			labelTiempoPromedioEspera.setText("Tiempo Promedio de Espera: "
-					+ String.format("%.2f s", metricasMap.get("Tiempo promedio de espera")) + " m");
+					+ String.format("%.2f ", metricasMap.get("Tiempo promedio de espera")) + " m");
 			labelTiempoTotalEspera
 					.setText("Tiempo Total de Espera: " + metricasMap.get("Tiempo total de espera") + " m");
 			labelCantClientes.setText("Cantidad de Clientes: " + metricasMap.get("Cantidad total de clientes"));
