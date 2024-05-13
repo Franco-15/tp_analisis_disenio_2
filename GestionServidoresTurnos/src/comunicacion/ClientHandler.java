@@ -27,7 +27,7 @@ public class ClientHandler implements Runnable {
 
 			String mensaje = input.readLine();
 			if (mensaje != null) {
-				output.println(monitor.getActiveServerPort(mensaje)); // Le envio a subsistema Registro donde debe	publicar al cliente 
+				output.println(monitor.getPuertoDeServidorActivo(mensaje)); // Le envio a subsistema Registro donde debe	publicar al cliente 
 			}
 
 			input.close();

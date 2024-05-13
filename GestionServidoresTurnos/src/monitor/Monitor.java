@@ -155,7 +155,7 @@ public class Monitor implements Runnable{
 		return isConnected;
 	}
 
-	public synchronized int getActiveServerPort(String mensaje) {
+	public synchronized int getPuertoDeServidorActivo(String mensaje) {
 		int port = -1;
 		if(this.servidorActivo != null)
 			if(mensaje.equals("registro"))
