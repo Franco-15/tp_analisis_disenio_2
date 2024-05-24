@@ -1,63 +1,88 @@
 package comunicacion;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Comunicacion {
+import comunes.Direccionamiento;
+import comunes.MensajeComunicacion;
+
+public class Comunicacion{
+	private static Comunicacion instance = null;
 	private String ip;
 	private int port;
 
-	public Comunicacion(String ip, int port) {
+	private Comunicacion(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
 	}
 
-	public String obtenerCliente(String mensaje) {
-		String response = "";
+	public static Comunicacion getInstance() {
+		if (instance == null)
+			instance = new Comunicacion("localhost", 10);
+
+		return instance;
+	}
+
+	private Direccionamiento getServidorActivo() {
 
 		try {
-
 			// Conectar al servidor monitor
-			Socket socketMonitor = new Socket(this.ip, this.port);
-			BufferedReader inputMonitor = new BufferedReader(new InputStreamReader(socketMonitor.getInputStream()));
-			PrintWriter outputMonitor = new PrintWriter(socketMonitor.getOutputStream(), true);
+			Socket socketMonitor;
+			socketMonitor = new Socket(this.ip, this.port);
 
+			ObjectInputStream inputMonitor;
+			inputMonitor = new ObjectInputStream(socketMonitor.getInputStream());
+
+			ObjectOutputStream outputMonitor = new ObjectOutputStream(socketMonitor.getOutputStream());
+
+			Direccionamiento direccionamiento = new Direccionamiento();
 			// Enviar solicitud de publicación
-			outputMonitor.println("atencionCliente");
+			outputMonitor.writeObject(direccionamiento);
 
 			// Recibir el número de puerto del servidor destino
-			int portDestino = Integer.parseInt(inputMonitor.readLine());
+			Direccionamiento parametrosConexion;
+
+			parametrosConexion = (Direccionamiento) inputMonitor.readObject();
 
 			// Cerrar conexión con el servidor monitor
 			inputMonitor.close();
 			outputMonitor.close();
 			socketMonitor.close();
 
-			System.out.println("Puerto destino monitoreo " + portDestino);
-
-			if (portDestino != -1) {
-				Socket socket = new Socket(this.ip, portDestino);
-
-				BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-
-				if (mensaje != null) {
-					output.println(mensaje);
-					response = input.readLine();
-				}
-
-				input.close();
-				output.close();
-				socket.close();
-
-			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			return parametrosConexion;
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Error obteniendo los parametros de conexion");
+			return null;
 		}
+	}
 
+	public MensajeComunicacion publicar(MensajeComunicacion mensaje) throws IOException, ClassNotFoundException {
+		MensajeComunicacion response = null;
+		Direccionamiento parametrosConexion = this.getServidorActivo();
+
+		if (parametrosConexion != null) {
+			System.out.println(
+					"Servidor a conectarse: " + parametrosConexion.getIp() + ":" + parametrosConexion.getPuerto());
+			Socket socket = new Socket(parametrosConexion.getIp(), parametrosConexion.getPuerto());
+
+			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+			
+			if (mensaje != null) {
+				output.writeObject(mensaje);
+				response = (MensajeComunicacion) input.readObject();
+			}
+			else
+				System.out.println("El mensaje a enviar es nulo");
+
+			output.close();
+			input.close();
+		}else
+			System.out.println("Error al obtener los parámetros de comunicacion con el servidor gestion turnos");
+		
 		return response;
+		
 	}
 }

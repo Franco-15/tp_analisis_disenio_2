@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import registro.Response;
+import comunes.TRespuesta;
 
 public class VistaRegistro extends JFrame {
 
@@ -91,15 +91,9 @@ public class VistaRegistro extends JFrame {
 		this.textField_numero_dni.setText("");
 	}
 
-	public void mostrarResultadoRegistro(String resultado) {
-		if (resultado.equals("0"))
-			JOptionPane.showMessageDialog(this, Response.RegistroExistoso, "Registro Exitoso",
-					JOptionPane.INFORMATION_MESSAGE);
-		else if (resultado.equals("1"))
-			JOptionPane.showMessageDialog(this, Response.DocumentoYaRegistro, "Operacion Inválida",
-					JOptionPane.WARNING_MESSAGE);
-		else if (resultado.equals("2"))
-			JOptionPane.showMessageDialog(this, Response.ErrorDeSistema, "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+	public void mostrarResultadoRegistro(TRespuesta respuesta) {
+			JOptionPane.showMessageDialog(this, respuesta.getMensaje(), respuesta.getTitulo(),
+					respuesta.getEstado());
 	}
 
 	public void dniNoValido() {

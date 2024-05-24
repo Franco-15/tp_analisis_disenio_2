@@ -1,9 +1,10 @@
 package main;
 
-import vistas.Monitoreovista;
+import controlador.Controlador;
 
 public class MainMonitoreo {
 	public static void main(String[] args) {
-		Monitoreovista monitoreo = new Monitoreovista();
+		Controlador controlador = new Controlador();
+		controlador.run();
 	}
 }

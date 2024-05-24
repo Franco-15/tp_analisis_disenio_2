@@ -15,4 +15,11 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>Comunes</groupId>
+  		<artifactId>Comunes</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>

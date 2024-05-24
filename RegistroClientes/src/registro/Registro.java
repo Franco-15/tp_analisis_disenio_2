@@ -1,17 +1,20 @@
 package registro;
 
+import comunes.Cliente;
+import comunes.TRespuesta;
 import comunicacion.Comunicacion;
 
-public class Registro {// extends Observable??
-//	private ICliente cliente;
-	private Comunicacion publicacion;
-
+public class Registro {
+	private Comunicacion comunicacion;
+	private Cliente cliente;
+	
 	public Registro() {
+		this.comunicacion = Comunicacion.getInstance();
 	}
 
-	public String registrarCliente(String dni) {
-		publicacion = Comunicacion.getInstance();
-//		cliente = new Cliente(dni);
-		return publicacion.publicar(dni);
+	public TRespuesta registrarCliente(String dni) {
+		this.cliente = new Cliente(dni);
+		
+		return comunicacion.publicar(this.cliente);
 	}
 }

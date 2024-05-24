@@ -23,7 +23,7 @@ public class ServidorSincronizacion implements Runnable {
 
 	public static ServidorSincronizacion getInstance() {
 		if (instance == null)
-			instance = new ServidorSincronizacion(16);
+			instance = new ServidorSincronizacion(15);
 
 		return instance;
 	}

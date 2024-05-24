@@ -21,7 +21,7 @@ public class ServidorMonitorGestionTurnos implements Runnable {
 
 	public static ServidorMonitorGestionTurnos getInstance() {
 		if (instance == null)
-			instance = new ServidorMonitorGestionTurnos(13);
+			instance = new ServidorMonitorGestionTurnos(16);
 
 		return instance;
 	}

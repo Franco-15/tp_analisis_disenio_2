@@ -8,20 +8,20 @@ public class TElementoColaEspera implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String dni;
+	private Cliente cliente;
 	private LocalDateTime fechaHoraLlegada;
 	
-	public TElementoColaEspera(String elementoCola) {
-		this.dni = elementoCola;
+	public TElementoColaEspera(Cliente elementoCola) {
+		this.cliente = elementoCola;
 		this.fechaHoraLlegada = LocalDateTime.now();
 	}
 
-	public String getDni() {
-		return dni;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setDni(String dni) {
-		this.dni = dni;
+	public void setCliente(Cliente dni) {
+		this.cliente = dni;
 	}
 
 	public LocalDateTime getFechaHoraLlegada() {

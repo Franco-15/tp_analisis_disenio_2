@@ -23,18 +23,17 @@ public class ServidorSincronizacion implements Runnable {
 
 	public static ServidorSincronizacion getInstance() {
 		if (instance == null)
-			instance = new ServidorSincronizacion(18);
+			instance = new ServidorSincronizacion(13);
 
 		return instance;
 	}
 
-	@Override
 	public void run() {
 		VistaLogs vista = VistaLogs.getInstance();
 		try {
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
-				vista.agregarElemento("Servidor sincronizacion escuchando en puerto" + this.puerto);
+				vista.agregarElemento("Servidor sincronizacion escuchando en puerto " + this.puerto);
 
 				Socket clientSocket = serverSocket.accept();
 				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());

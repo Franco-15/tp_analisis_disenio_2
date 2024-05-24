@@ -14,8 +14,6 @@ public class Sincronizacion implements Runnable {
 
 	private static Sincronizacion instance = null;
 	private Monitor monitor;
-	
-
 
 	private Sincronizacion() {
 		this.monitor = Monitor.getInstance();

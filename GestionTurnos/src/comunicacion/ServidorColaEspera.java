@@ -1,20 +1,21 @@
 package comunicacion;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import comunes.Cliente;
+import comunes.TRespuesta;
 import vistas.VistaLogs;
 
-public class ServidorColaEspera implements Runnable{
+public class ServidorColaEspera implements Runnable {
 	private static ServidorColaEspera instance = null;
-	
+
 	private int port;
 	private GestionRecepcionServidor gestionMensajesRecibidos;
-	
+
 	private ServidorColaEspera(int port) {
 		this.port = port;
 		this.gestionMensajesRecibidos = new GestionRecepcionServidor();
@@ -27,35 +28,43 @@ public class ServidorColaEspera implements Runnable{
 		return instance;
 	}
 
-	@Override
 	public void run() {
 		VistaLogs vista = VistaLogs.getInstance();
-		try {
+		try (ServerSocket serverSocket = new ServerSocket(this.port)) {
+			vista.agregarElemento("Servidor de cola de espera escuchando en puerto " + this.port);
+
 			while (true) {
-				ServerSocket serverSocket = new ServerSocket(this.port);
-				vista.agregarElemento("Servidor de cola de espera escuchando en puerto " + this.port);
-				
-				Socket clientSocket = serverSocket.accept();
-				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+				try (Socket clientSocket = serverSocket.accept()) {
+					vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName() + ":"
+							+ clientSocket.getLocalPort());
+					System.out.println("Cliente conectado");
 
-				BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+					try (ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+							ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream())) {
 
-				String mensaje;
-				while ((mensaje = input.readLine()) != null) {
-					vista.agregarElemento("Cliente con documento: " + mensaje);
-					String result = gestionMensajesRecibidos.agregarClienteAColaEspera(mensaje);
-					output.println(result);
+						Cliente cliente = (Cliente) input.readObject();
+						System.out.println(cliente.getDni());
+
+//						 Si el cliente no es nulo, procesa la solicitud.
+						if (cliente != null) {
+							// Suponiendo que 'cliente' es un String que contiene el documento del cliente
+							vista.agregarElemento("Cliente con documento: " + cliente.getDni());
+							TRespuesta result = gestionMensajesRecibidos.agregarClienteAColaEspera(cliente);
+							output.writeObject(result);
+						}
+					} catch (ClassNotFoundException e) {
+						System.out.println("Error de clase no encontrada: " + e.getMessage());
+						vista.agregarElemento("Error de clase no encontrada: " + e.getMessage());
+					}
+				} catch (IOException e) {
+					System.out.println("Error de E/S con el cliente: " + e.getMessage());
+					vista.agregarElemento("Error de E/S con el cliente: " + e.getMessage());
 				}
-
-				input.close();
-				output.close();
-				clientSocket.close();
-				serverSocket.close();
 			}
 		} catch (IOException e) {
-			vista.agregarElemento(e.getMessage());
+			System.out.println("Error de E/S del servidor: " + e.getMessage());
+			vista.agregarElemento("Error de E/S del servidor: " + e.getMessage());
 		}
-		
 	}
+
 }

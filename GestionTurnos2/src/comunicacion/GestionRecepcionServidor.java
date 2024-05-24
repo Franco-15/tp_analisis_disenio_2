@@ -2,12 +2,17 @@ package comunicacion;
 
 import java.util.Map;
 
+import comunes.Cliente;
 import comunes.DatosSincronizacion;
 import comunes.IColaEspera;
+import comunes.MensajeAtencionCliente;
+import comunes.MensajeComunicacion;
+import comunes.Respuestas;
 import comunes.TElementoColaEspera;
-import modelo.colaEspera.ColaEspera;
-import modelo.metricas.Metricas;
-import modelo.turnos.Turnos;
+import comunes.TRespuesta;
+import gestionTurnos.ColaEspera;
+import gestionTurnos.Metricas;
+import gestionTurnos.Turnos;
 
 public class GestionRecepcionServidor {
 
@@ -21,26 +26,32 @@ public class GestionRecepcionServidor {
 		this.metricas = Metricas.getInstance();
 	}
 
-	public String agregarClienteAColaEspera(String mensaje) {
-		TElementoColaEspera elementoCola = new TElementoColaEspera(mensaje);
+	public TRespuesta agregarClienteAColaEspera(Cliente cliente) {
+		TElementoColaEspera elementoCola = new TElementoColaEspera(cliente);
 		Metricas metricas = Metricas.getInstance();
-		String response = "2";
+		TRespuesta response = Respuestas.ErrorDeSistema();
 
 		if (this.colaEspera.existe(elementoCola)) {
-			response = "1";
+			response = Respuestas.DocumentoYaRegistrado();
 		} else {
 			boolean result = this.colaEspera.agregar(elementoCola);
 			if (result) {
 				metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
 				metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() + 1);
-				response = "0";
+				response = Respuestas.RegistroExitoso();
 			}
 		}
 		return response;
 	}
 
-	public String atenderCliente(String numeroBox) {
-		return turnos.atenderCliente(Integer.parseInt(numeroBox));
+	public MensajeAtencionCliente atenderCliente(MensajeAtencionCliente mensaje) {
+		return turnos.atenderCliente(mensaje);
+	}
+	
+	public MensajeComunicacion resultadoAtencion(MensajeAtencionCliente mensaje) {
+		String result = turnos.resultadosAtencion(mensaje);
+		
+		return new MensajeComunicacion(result);
 	}
 
 	public Map<String, Object> actualizarMetricas() {

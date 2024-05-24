@@ -3,9 +3,8 @@ package comunicacion;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
-import modelo.turnos.TElementoNotificacion;
+import comunes.TElementoNotificacion;
 
 public class PublicacionNotificacion {
 	
@@ -33,8 +32,7 @@ public class PublicacionNotificacion {
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 
 			if (mensaje != null) {
-				String[] datos = new String[]{mensaje.getDni(), mensaje.getBox()};
-				output.writeObject(datos);
+				output.writeObject(mensaje);
 			}
 
 			output.close();

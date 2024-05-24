@@ -1,12 +1,13 @@
 package comunicacion;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import comunes.MensajeAtencionCliente;
+import comunes.MensajeComunicacion;
 import vistas.VistaLogs;
 
 public class ServidorAtencionClientes implements Runnable {
@@ -31,32 +32,48 @@ public class ServidorAtencionClientes implements Runnable {
 	@Override
 	public void run() {
 		VistaLogs vista = VistaLogs.getInstance();
-		try {
+		try (ServerSocket serverSocket = new ServerSocket(this.port)) {
+			vista.agregarElemento("Servidor de atencion al cliente escuchando en puerto " + this.port);
+
 			while (true) {
-				ServerSocket serverSocket = new ServerSocket(this.port);
-				vista.agregarElemento("Servidor atencion cliente escuchando en puerto " + this.port);
+				try (Socket clientSocket = serverSocket.accept()) {
+					vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName() + ":"
+							+ clientSocket.getLocalPort());
+					System.out.println("Cliente conectado");
 
-				Socket clientSocket = serverSocket.accept();
-				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+					try (ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+							ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream())) {
 
-				BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+						MensajeComunicacion mensaje = (MensajeComunicacion) input.readObject();
+						if (mensaje != null) {
+							MensajeAtencionCliente mensajeAtencion = (MensajeAtencionCliente) mensaje.getMensaje();
 
-				String mensaje;
-				while ((mensaje = input.readLine()) != null) {
-					vista.agregarElemento("Petición de cliente recibida desde el box número: " + mensaje);
-					String result = gestionMensajesRecibidos.atenderCliente(mensaje);
-					output.println(result);
+							if (mensajeAtencion.getCliente() == null) {
+								MensajeAtencionCliente result = gestionMensajesRecibidos
+										.atenderCliente(mensajeAtencion);
+								mensaje.setMensaje(result);
+								output.writeObject(mensaje);
+							} else {
+								MensajeComunicacion result = gestionMensajesRecibidos.resultadoAtencion(mensajeAtencion);
+								mensaje.setMensaje(result);
+								output.writeObject(mensaje);
+							}
+
+						}
+
+					} catch (ClassNotFoundException e) {
+						System.out.println("Error de clase no encontrada: " + e.getMessage());
+						vista.agregarElemento("Error de clase no encontrada: " + e.getMessage());
+					}
+				} catch (IOException e) {
+					System.out.println("Error de E/S con el cliente: " + e.getMessage());
+					vista.agregarElemento("Error de E/S con el cliente: " + e.getMessage());
 				}
 
-				input.close();
-				output.close();
-				clientSocket.close();
-				serverSocket.close();
 			}
 		} catch (IOException e) {
-			vista.agregarElemento(e.getMessage());
+			System.out.println("Error de E/S del servidor: " + e.getMessage());
+			vista.agregarElemento("Error de E/S del servidor: " + e.getMessage());
 		}
-
 	}
 }

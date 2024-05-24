@@ -23,7 +23,7 @@ public class ServidorMonitoreo implements Runnable {
 
 	public static ServidorMonitoreo getInstance() {
 		if (instance == null)
-			instance = new ServidorMonitoreo(20);
+			instance = new ServidorMonitoreo(5);
 
 		return instance;
 	}
@@ -35,15 +35,16 @@ public class ServidorMonitoreo implements Runnable {
 			while (true) {
 				ServerSocket serverSocket = new ServerSocket(this.puerto);
 				vista.agregarElemento("Servidor monitoreo escuchando en puerto " + this.puerto);
-
+				
 				Socket clientSocket = serverSocket.accept();
 				vista.agregarElemento("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
+				
 
 				ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 				ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
 
 				Map<String, Object> mensaje = (Map<String, Object>) input.readObject();
-
+				
 				if (mensaje != null) {
 					vista.agregarElemento("Cliente: " + mensaje);
 					Map<String, Object> result = gestionMensajesRecibidos.actualizarMetricas();
@@ -55,7 +56,7 @@ public class ServidorMonitoreo implements Runnable {
 				clientSocket.close();
 				serverSocket.close();
 			}
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException e ) {
 			vista.agregarElemento(e.getMessage());
 		}
 

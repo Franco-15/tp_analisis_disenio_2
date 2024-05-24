@@ -5,7 +5,7 @@ import comunicacion.ServidorColaEspera;
 import comunicacion.ServidorMonitorGestionTurnos;
 import comunicacion.ServidorMonitoreo;
 import comunicacion.ServidorSincronizacion;
-import modelo.turnos.Turnos;
+import gestionTurnos.Turnos;
 import vistas.VistaLogs;
 
 public class Controlador {
