@@ -40,7 +40,7 @@ public class ServidorDireccionamiento implements Runnable {
 						Direccionamiento respuesta = null;
 
 						if (parametrosConexion != null) {
-							respuesta = this.monitor.getPuertoDeServidorActivo(this.port, parametrosConexion);
+							respuesta = this.monitor.getServidorActivo(this.port, parametrosConexion);
 						}
 						output.writeObject(respuesta);
 						

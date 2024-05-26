@@ -67,6 +67,7 @@ public class Turnos {
 		} else {
 			if (mensaje.isYaFueLlamado()) {
 				this.metricas.actualizarClientesNoAtendidos(this.metricas.getClientesNoAtendidos() + 1);
+				this.metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() - 1);
 				result = "El cliente se retiró del establecimiento sin ser atendido";
 			}
 			else {

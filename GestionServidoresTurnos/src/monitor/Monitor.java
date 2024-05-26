@@ -155,7 +155,7 @@ public class Monitor implements Runnable {
 		return isConnected;
 	}
 
-	public synchronized Direccionamiento getPuertoDeServidorActivo(int puertoDireccionamiento, Direccionamiento parametrosConexion) {
+	public synchronized Direccionamiento getServidorActivo(int puertoDireccionamiento, Direccionamiento parametrosConexion) {
 		if (this.servidorActivo != null) {
 			parametrosConexion.setIp(this.servidorActivo.getDireccionIP());
 			if (puertoDireccionamiento == 9)

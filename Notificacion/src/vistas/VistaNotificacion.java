@@ -156,6 +156,10 @@ public class VistaNotificacion extends JFrame {
 	}
 
 	public void actualizarPantalla(TElementoNotificacion elemento) {
+		if(modelListDNI.size() >= 5) {
+			modelListBOX.removeElement(modelListBOX.lastElement());
+			modelListDNI.removeElement(modelListDNI.lastElement());
+		}
     	modelListDNI.add(0,elemento.getDni());
         modelListBOX.add(0,elemento.getBox());
     }
