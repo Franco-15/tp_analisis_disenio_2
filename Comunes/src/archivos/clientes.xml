@@ -1,0 +1,17 @@
+<clientes>
+    <cliente>
+        <numero_documento>12345678</numero_documento>
+        <grupo_afinidad>gold</grupo_afinidad>
+        <fecha_nacimiento>1980-05-15</fecha_nacimiento>
+    </cliente>
+    <cliente>
+        <numero_documento>87654321</numero_documento>
+        <grupo_afinidad>platinum</grupo_afinidad>
+        <fecha_nacimiento>1990-08-25</fecha_nacimiento>
+    </cliente>
+    <cliente>
+        <numero_documento>11223344</numero_documento>
+        <grupo_afinidad>signature</grupo_afinidad>
+        <fecha_nacimiento>1975-12-30</fecha_nacimiento>
+    </cliente>
+</clientes>

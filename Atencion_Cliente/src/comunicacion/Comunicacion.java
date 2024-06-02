@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import comunes.Direccionamiento;
+import comunes.EServidores;
 import comunes.MensajeComunicacion;
 
 public class Comunicacion{
@@ -37,9 +38,8 @@ public class Comunicacion{
 
 			ObjectOutputStream outputMonitor = new ObjectOutputStream(socketMonitor.getOutputStream());
 
-			Direccionamiento direccionamiento = new Direccionamiento();
 			// Enviar solicitud de publicación
-			outputMonitor.writeObject(direccionamiento);
+			outputMonitor.writeObject(EServidores.ATENCION_CLIENTE);
 
 			// Recibir el número de puerto del servidor destino
 			Direccionamiento parametrosConexion;

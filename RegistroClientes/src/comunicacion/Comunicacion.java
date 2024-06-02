@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import comunes.Cliente;
 import comunes.Direccionamiento;
+import comunes.EServidores;
 import comunes.Respuestas;
 import comunes.TRespuesta;
 
@@ -31,13 +32,13 @@ public class Comunicacion {
 		TRespuesta respuesta = Respuestas.ErrorDeSistema();
 
 		try {
-			Direccionamiento direccionamiento = new Direccionamiento();
+			
 			Socket socketMonitor = new Socket(this.ipMonitor, this.portMonitor);
 			ObjectInputStream inputMonitor = new ObjectInputStream(socketMonitor.getInputStream());
 			ObjectOutputStream outputMonitor = new ObjectOutputStream(socketMonitor.getOutputStream());
 
 			// Enviar solicitud de publicación
-			outputMonitor.writeObject(direccionamiento);
+			outputMonitor.writeObject(EServidores.REGISTRO);
 
 			// Recibir el número de puerto del servidor destino
 			Direccionamiento parametrosConexion;

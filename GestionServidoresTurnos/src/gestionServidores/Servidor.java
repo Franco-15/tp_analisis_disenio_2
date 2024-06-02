@@ -1,4 +1,4 @@
-package monitor;
+package gestionServidores;
 
 import java.time.LocalDateTime;
 
@@ -9,25 +9,43 @@ public class Servidor {
 	private int puertoRegistro;
 	private int puertoMonitoreo;
 	private int puertoAtencionCliente;
-	private boolean estado; // true para encendido, false para apagado
+	private int puertoPing;
+	private int puertoSincronizacion;
+	private EstadoServidor estado; // true para encendido, false para apagado
 	private LocalDateTime ultimaVezActivo = null;
 	
 	// Constructor
-	public Servidor(String nombre, String direccionIP, int puertoRegistro, int puertoMonitoreo, int puertoAtencionCliente) {
+	public Servidor(String nombre, String direccionIP, int puertoRegistro, int puertoMonitoreo, int puertoAtencionCliente, int puertoPing, int puertoSincronizacion) {
 		this.nombre = nombre;
 		this.direccionIP = direccionIP;
 		this.puertoRegistro = puertoRegistro;
 		this.puertoMonitoreo = puertoMonitoreo;
 		this.puertoAtencionCliente= puertoAtencionCliente;
-		this.estado = true;
-		this.ultimaVezActivo = LocalDateTime.now();
+		this.puertoPing = puertoPing;
+		this.puertoSincronizacion = puertoSincronizacion;
 	}
 
-	public boolean getEstado() {
+	public int getPuertoSincronizacion() {
+		return puertoSincronizacion;
+	}
+
+	public void setPuertoSincronizacion(int puertoSincronizacion) {
+		this.puertoSincronizacion = puertoSincronizacion;
+	}
+
+	public int getPuertoPing() {
+		return puertoPing;
+	}
+
+	public void setPuertoPing(int puertoPing) {
+		this.puertoPing = puertoPing;
+	}
+
+	public EstadoServidor getEstado() {
 		return this.estado;
 	}
 	
-	public void setEstado(boolean estado) {
+	public void setEstado(EstadoServidor estado) {
 		this.estado = estado;
 	}
 
@@ -80,3 +98,4 @@ public class Servidor {
 	}
 	
 }
+
