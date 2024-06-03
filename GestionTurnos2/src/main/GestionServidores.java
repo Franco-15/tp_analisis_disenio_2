@@ -1,4 +1,4 @@
-package controlador;
+package main;
 
 import comunicacion.ServidorAtencionClientes;
 import comunicacion.ServidorColaEspera;
@@ -8,10 +8,8 @@ import comunicacion.ServidorSincronizacion;
 import gestionTurnos.Turnos;
 import vistas.VistaLogs;
 
-public class Controlador {
-	
-	
-	public void run() {
+public class GestionServidores {
+	public void iniciarServidores() {
 		Turnos turnos = Turnos.getInstance();
 		VistaLogs vista = VistaLogs.getInstance();
 		ServidorColaEspera servidorColaEspera = ServidorColaEspera.getInstance();

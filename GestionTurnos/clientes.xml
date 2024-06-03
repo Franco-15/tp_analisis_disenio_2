@@ -11,7 +11,7 @@
     </cliente>
     <cliente>
         <numero_documento>11223344</numero_documento>
-        <grupo_afinidad>signature</grupo_afinidad>
+        <grupo_afinidad>platinium</grupo_afinidad>
         <fecha_nacimiento>1975-12-30</fecha_nacimiento>
     </cliente>
 </clientes>

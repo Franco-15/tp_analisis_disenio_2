@@ -1,10 +1,11 @@
 package archivos;
 
 import java.util.List;
+import comunes.Cliente;
 
 public interface IArchivoCliente {
-	  void escribirClientes(List<ClienteArchivo> clientes);
-	  List<ClienteArchivo> leerClientes();
-	  void actualizarCliente(ClienteArchivo cliente);
+	  void escribirClientes(List<Cliente> clientes);
+	  List<Cliente> leerClientes();
+	  void actualizarCliente(Cliente cliente);
 	  void eliminarCliente(String numeroDocumento);
 }

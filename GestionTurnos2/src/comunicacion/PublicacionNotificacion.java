@@ -20,7 +20,7 @@ public class PublicacionNotificacion {
 
 	public static PublicacionNotificacion getInstance() {
 		if (instance == null)
-			instance = new PublicacionNotificacion("localhost", 6);
+			instance = new PublicacionNotificacion("localhost", 4);
 
 		return instance;
 	}

@@ -1,10 +1,17 @@
 package main;
 
-import controlador.Controlador;
+import comunicacion.GestionRecepcionServidor;
 
 public class GestionTurnosMain {
 	public static void main(String[] args) {
-		Controlador controlador = new Controlador();
-		controlador.run();	
+		
+		Configuracion configuracion = Configuracion.getInstance();
+		configuracion.configurar("config.json");
+		
+		GestionServidores gestionServidores = new GestionServidores();
+		gestionServidores.iniciarServidores();
+		
+		GestionRecepcionServidor gestionRecepcionServidor = new GestionRecepcionServidor();
+		gestionRecepcionServidor.cargarClientes();
 	}
 }

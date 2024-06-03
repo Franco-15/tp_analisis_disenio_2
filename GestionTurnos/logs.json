@@ -1,0 +1,42 @@
+[
+  {
+    "numeroDocumento": "12345678",
+    "evento": "Cliente Registrado",
+    "fechaEvento": "2024-06-02T22:50:27.527572"
+  },
+  {
+    "numeroDocumento": "87654321",
+    "evento": "Cliente Registrado",
+    "fechaEvento": "2024-06-02T22:50:27.559692200"
+  },
+  {
+    "numeroDocumento": "753159",
+    "evento": "Cliente Registrado",
+    "fechaEvento": "2024-06-02T22:50:27.561205400"
+  },
+  {
+    "numeroDocumento": "11223344",
+    "evento": "Cliente Registrado",
+    "fechaEvento": "2024-06-02T22:50:27.563218700"
+  },
+  {
+    "numeroDocumento": "12345678",
+    "evento": "Cliente llamado",
+    "fechaEvento": "2024-06-02T22:51:09.918439600"
+  },
+  {
+    "numeroDocumento": "87654321",
+    "evento": "Cliente llamado",
+    "fechaEvento": "2024-06-02T22:51:14.323604200"
+  },
+  {
+    "numeroDocumento": "753159",
+    "evento": "Cliente llamado",
+    "fechaEvento": "2024-06-02T22:51:15.435044"
+  },
+  {
+    "numeroDocumento": "11223344",
+    "evento": "Cliente llamado",
+    "fechaEvento": "2024-06-02T22:51:17.511411"
+  }
+]

@@ -1,0 +1,4 @@
+numero_documento,grupo_afinidad,fecha_nacimiento
+12345678,gold,1980-05-15
+87654321,platinum,1990-08-25
+11223344,signature,1975-12-30

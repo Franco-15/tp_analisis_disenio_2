@@ -112,6 +112,8 @@ public class VistaPrincipalEmpleado extends JFrame {
 		this.scrollPane_2.setViewportView(this.list_clientes_no_atendidos);
 		this.modeloListaClientesNoAtendidos = new DefaultListModel<String>();
 		this.list_clientes_no_atendidos.setModel(this.modeloListaClientesNoAtendidos);
+		this.btnAtender.setEnabled(false);
+		this.btnNoRespondio.setEnabled(false);
 	}
 
 	public void setNumeroBox(String numeroBox) {
@@ -127,18 +129,24 @@ public class VistaPrincipalEmpleado extends JFrame {
 		System.out.println("Proximo Cliente: " + cliente.getDni());
 		this.modeloListaProximoCliente.addElement(cliente.getDni());
 		this.btnLlamarCliente.setEnabled(false);
+		this.btnAtender.setEnabled(true);
+		this.btnNoRespondio.setEnabled(true);
 	}
 	
 	public void agregarClienteAtendido(Cliente cliente) {
 		this.modeloListaProximoCliente.clear();
 		this.modeloListaClientesAtendidos.addElement(cliente.getDni());
 		this.btnLlamarCliente.setEnabled(true);
+		this.btnAtender.setEnabled(false);
+		this.btnNoRespondio.setEnabled(false);
 	}
 	
 	public void agregarClienteNoAtendido(Cliente cliente) {
 		this.modeloListaProximoCliente.clear();
 		this.modeloListaClientesNoAtendidos.addElement(cliente.getDni());
 		this.btnLlamarCliente.setEnabled(true);
+		this.btnAtender.setEnabled(false);
+		this.btnNoRespondio.setEnabled(false);
 	}
 	
 	public void setActionListener(ActionListener actionListener) {

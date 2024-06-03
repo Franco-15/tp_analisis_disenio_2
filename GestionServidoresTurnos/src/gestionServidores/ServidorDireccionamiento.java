@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import comunes.Direccionamiento;
 import comunes.EServidores;
+import vistas.VistaLogs;
 
 public class ServidorDireccionamiento implements Runnable {
 
@@ -21,7 +22,6 @@ public class ServidorDireccionamiento implements Runnable {
 
 	@Override
 	public void run() {
-
 		try (ServerSocket serverSocket = new ServerSocket(this.puerto)) {
 			while (true) {
 //				vista.agregarElemento("Servidor de Direccionamiento escuchando en puerto " + this.puerto);

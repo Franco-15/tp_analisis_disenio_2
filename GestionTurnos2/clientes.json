@@ -1,0 +1,6 @@
+[
+	{"numero_documento": "753159", "grupo_afinidad": "gold", "fecha_nacimiento": "1998-05-15"},
+	{"numero_documento": "12345678", "grupo_afinidad": "signature", "fecha_nacimiento": "1980-05-15"},
+    {"numero_documento": "87654321","grupo_afinidad": "platinum","fecha_nacimiento": "1900-08-25"},
+    {"numero_documento": "11223344","grupo_afinidad": "gold","fecha_nacimiento": "1975-12-30"}
+]

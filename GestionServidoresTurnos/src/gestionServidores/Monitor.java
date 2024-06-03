@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalDateTime;
 
+import vistas.VistaLogs;
+
 public class Monitor implements Runnable {
 
 	private Servidores servidores;
@@ -17,16 +19,16 @@ public class Monitor implements Runnable {
 
 	@Override
 	public void run() {
-
+		VistaLogs vista = VistaLogs.getInstance();
 		while (true) {
-			System.out.println("Monitoreando Servidores...");
+			vista.agregarElemento("Monitoreando Servidores...");
 			for (Servidor servidor : this.servidores.getServidores()) {
 				if (isServidorActivo(servidor)) {
-					System.out.println("Servidor Activo: " + servidor.getNombre());
+					vista.agregarElemento("Servidor Activo: " + servidor.getNombre());
 					servidor.setEstado(EstadoServidor.Activo);
 					servidor.setUltimaVezActivo(LocalDateTime.now());
 				} else {
-					System.out.println("Servidor Inactivo: " + servidor.getNombre());
+					vista.agregarElemento("Servidor Inactivo: " + servidor.getNombre());
 					servidor.setEstado(EstadoServidor.Inactivo);
 				}
 			}
@@ -34,12 +36,12 @@ public class Monitor implements Runnable {
 			if(servidores.getServidoresActivos().size()>0)
 				setServidorPrimario();
 			else
-				System.out.println("No hay servidores activos");
+				vista.agregarElemento("No hay servidores activos");
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
+				vista.agregarElemento(e.getMessage());
 			}
 		}
 

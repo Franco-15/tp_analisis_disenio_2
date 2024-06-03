@@ -3,22 +3,26 @@ package archivos;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import comunes.Cliente;
 
 public class ArchivoJSONCliente implements IArchivoCliente{
 	private static final String FILE_NAME = "clientes.json";
 	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Override
-	public void escribirClientes(List<ClienteArchivo> clientes) {
+	public void escribirClientes(List<Cliente> clientes) {
 		try (Writer writer = new FileWriter(FILE_NAME)) {
 			gson.toJson(clientes, writer);
 		} catch (IOException e) {
@@ -27,21 +31,30 @@ public class ArchivoJSONCliente implements IArchivoCliente{
 	}
 
 	@Override
-	public List<ClienteArchivo> leerClientes() {
-		try (Reader reader = new FileReader(FILE_NAME)) {
-			ClienteArchivo[] clientes = gson.fromJson(reader, ClienteArchivo[].class);
-			return Arrays.asList(clientes);
+	public List<Cliente> leerClientes() {
+		List<Cliente> clientes = new ArrayList<>();
+		try (FileReader reader = new FileReader(FILE_NAME)) {
+			// Parsea el archivo JSON a un JsonElement
+			JsonElement jsonElement = JsonParser.parseReader(reader);
+			// Convierte el JsonElement a un JsonObject
+			JsonArray jsonArray = jsonElement.getAsJsonArray();
+			
+			for(JsonElement element : jsonArray) {
+			   JsonObject jsonObject = element.getAsJsonObject();	
+			   clientes.add(new Cliente(jsonObject.get("numero_documento").getAsString(),jsonObject.get("grupo_afinidad").getAsString(),jsonObject.get("fecha_nacimiento").getAsString() ));
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new ArrayList<>();
+			System.out.println(e.getMessage());
+			System.out.println("No pudo leerse el archivo de configuracion");
+		};
+		return clientes;
 	}
 
 	@Override
-	public void actualizarCliente(ClienteArchivo cliente) {
-		List<ClienteArchivo> clientes = leerClientes();
-		for (ClienteArchivo c : clientes) {
-			if (c.getNumeroDocumento().equals(cliente.getNumeroDocumento())) {
+	public void actualizarCliente(Cliente cliente) {
+		List<Cliente> clientes = leerClientes();
+		for (Cliente c : clientes) {
+			if (c.getDni().equals(cliente.getDni())) {
 				c.setGrupoAfinidad(cliente.getGrupoAfinidad());
 				c.setFechaNacimiento(cliente.getFechaNacimiento());
 				break;
@@ -52,8 +65,8 @@ public class ArchivoJSONCliente implements IArchivoCliente{
 
 	@Override
 	public void eliminarCliente(String numeroDocumento) {
-		List<ClienteArchivo> clientes = leerClientes();
-		clientes = clientes.stream().filter(c -> !c.getNumeroDocumento().equals(numeroDocumento))
+		List<Cliente> clientes = leerClientes();
+		clientes = clientes.stream().filter(c -> !c.getDni().equals(numeroDocumento))
 				.collect(Collectors.toList());
 		escribirClientes(clientes);
 	}

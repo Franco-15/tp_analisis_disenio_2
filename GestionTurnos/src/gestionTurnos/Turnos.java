@@ -1,10 +1,16 @@
 package gestionTurnos;
 
+import java.time.LocalDateTime;
+
+import archivos.IArchivoLogs;
+import archivos.Log;
+import archivos.Logs;
 import comunes.IColaEspera;
 import comunes.MensajeAtencionCliente;
 import comunes.TElementoColaEspera;
 import comunes.TElementoNotificacion;
 import comunicacion.PublicacionNotificacion;
+import main.Configuracion;
 
 public class Turnos {
 	private static Turnos instance = null;
@@ -25,12 +31,17 @@ public class Turnos {
 	}
 
 	public synchronized MensajeAtencionCliente atenderCliente(MensajeAtencionCliente mensaje) {
-
+		Logs logs = Logs.getInstance();
+		Configuracion configuracion = Configuracion.getInstance();
+		
+		IArchivoLogs archivo = configuracion.getFactoryArchivos().crearArchivoLogs();
 		TElementoColaEspera clienteLlamado;
 
 		if (colaEspera.tamaño() > 0 && this.contLlamados < 4) {
 			this.contLlamados += 1;
 			clienteLlamado = colaEspera.sacar();
+			logs.agregarLog(new Log(clienteLlamado.getCliente().getDni(), "Cliente llamado", LocalDateTime.now().toString()));
+			archivo.escribirLogs(logs.obtenerLista());
 			mensaje.setYaFueLlamado(false);
 		} else if (colaClientesYaLlamados.tamaño() > 0) {
 			this.contLlamados = 0;

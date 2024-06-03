@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import comunes.DatosSincronizacion;
+import vistas.VistaLogs;
 
 public class Sincronizacion implements Runnable {
 
@@ -17,9 +18,9 @@ public class Sincronizacion implements Runnable {
 
 	@Override
 	public void run() {
-
+		VistaLogs vista = VistaLogs.getInstance();
 		while (true) {
-			System.out.println("Sincronizando servidores...");
+			vista.agregarElemento("Sincronizando servidores...");
 			if (servidores.getServidoresActivos().size() > 1) {
 				Servidor servidorPrimario = servidores.getServidorPrimario();
 				if (servidorPrimario != null && servidorPrimario.getEstado() == EstadoServidor.Activo) {
@@ -28,26 +29,27 @@ public class Sincronizacion implements Runnable {
 						for (Servidor servidor : servidores.getServidoresActivos()) {
 							if (servidor != servidorPrimario)
 								if (sincronizar(servidor, datosSincronizacion))
-									System.out.println(
+									vista.agregarElemento(
 											"Servidor: " + servidor.getNombre() + " sincronizado exitosamente");
 								else
-									System.out.println("Error al sincronizar el servidor: " + servidor.getNombre());
+									vista.agregarElemento("Error al sincronizar el servidor: " + servidor.getNombre());
 						}
 					else
-						System.out.println("Error al obtener los datos de sincronizacion");
+						vista.agregarElemento("Error al obtener los datos de sincronizacion");
 				} else
-					System.out.println("Servidor primario nulo o inactivo");
+					vista.agregarElemento("Servidor primario nulo o inactivo");
 			} else
-				System.out.println("No hay suficientes servidores activos para sincronizar");
+				vista.agregarElemento("No hay suficientes servidores activos para sincronizar");
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				System.out.println(e.getLocalizedMessage());
+				vista.agregarElemento(e.getLocalizedMessage());
 			}
 		}
 	}
 
 	private DatosSincronizacion getDatosSincronizacion(Servidor servidor) {
+		VistaLogs vista = VistaLogs.getInstance();
 		DatosSincronizacion datosSincronizacion = null;
 		try {
 			Socket socket;
@@ -65,13 +67,14 @@ public class Sincronizacion implements Runnable {
 			output.close();
 			socket.close();
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println(e.getLocalizedMessage());
+			vista.agregarElemento(e.getLocalizedMessage());
 		}
 
 		return datosSincronizacion;
 	}
 
 	private boolean sincronizar(Servidor servidor, DatosSincronizacion datosSincronizacion) {
+		VistaLogs vista = VistaLogs.getInstance();
 		Socket socketSincronizacion;
 		try {
 			socketSincronizacion = new Socket(servidor.getDireccionIP(), servidor.getPuertoSincronizacion());
@@ -88,7 +91,7 @@ public class Sincronizacion implements Runnable {
 
 			return true;
 		} catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
+			vista.agregarElemento(e.getLocalizedMessage());
 			return false;
 		}
 	}

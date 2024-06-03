@@ -20,20 +20,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import comunes.Cliente;
+
 
 public class ArchivoXMLCliente implements IArchivoCliente{
 	 private static final String FILE_NAME = "clientes.xml";
 
 	    @Override
-	    public void escribirClientes(List<ClienteArchivo> clientes) {
+	    public void escribirClientes(List<Cliente> clientes) {
 	        try {
 	            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 	            Element rootElement = doc.createElement("clientes");
 	            doc.appendChild(rootElement);
-	            for (ClienteArchivo cliente : clientes) {
+	            for (Cliente cliente : clientes) {
 	                Element clienteElement = doc.createElement("cliente");
 	                rootElement.appendChild(clienteElement);
-	                createElement(doc, clienteElement, "numero_documento", cliente.getNumeroDocumento());
+	                createElement(doc, clienteElement, "numero_documento", cliente.getDni());
 	                createElement(doc, clienteElement, "grupo_afinidad", cliente.getGrupoAfinidad());
 	                createElement(doc, clienteElement, "fecha_nacimiento", cliente.getFechaNacimiento());
 	            }
@@ -48,8 +50,8 @@ public class ArchivoXMLCliente implements IArchivoCliente{
 	    }
 
 	    @Override
-	    public List<ClienteArchivo> leerClientes() {
-	        List<ClienteArchivo> clientes = new ArrayList<>();
+	    public List<Cliente> leerClientes() {
+	        List<Cliente> clientes = new ArrayList<>();
 	        try {
 	            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(FILE_NAME));
 	            doc.getDocumentElement().normalize();
@@ -61,7 +63,7 @@ public class ArchivoXMLCliente implements IArchivoCliente{
 	                    String numeroDocumento = eElement.getElementsByTagName("numero_documento").item(0).getTextContent();
 	                    String grupoAfinidad = eElement.getElementsByTagName("grupo_afinidad").item(0).getTextContent();
 	                    String fechaNacimiento = eElement.getElementsByTagName("fecha_nacimiento").item(0).getTextContent();
-	                    clientes.add(new ClienteArchivo(numeroDocumento, grupoAfinidad, fechaNacimiento));
+	                    clientes.add(new Cliente(numeroDocumento, grupoAfinidad, fechaNacimiento));
 	                }
 	            }
 	        } catch (Exception e) {
@@ -71,10 +73,10 @@ public class ArchivoXMLCliente implements IArchivoCliente{
 	    }
 
 	    @Override
-	    public void actualizarCliente(ClienteArchivo cliente) {
-	        List<ClienteArchivo> clientes = leerClientes();
-	        for (ClienteArchivo c : clientes) {
-	            if (c.getNumeroDocumento().equals(cliente.getNumeroDocumento())) {
+	    public void actualizarCliente(Cliente cliente) {
+	        List<Cliente> clientes = leerClientes();
+	        for (Cliente c : clientes) {
+	            if (c.getDni().equals(cliente.getDni())) {
 	                c.setGrupoAfinidad(cliente.getGrupoAfinidad());
 	                c.setFechaNacimiento(cliente.getFechaNacimiento());
 	                break;
@@ -85,9 +87,9 @@ public class ArchivoXMLCliente implements IArchivoCliente{
 
 	    @Override
 	    public void eliminarCliente(String numeroDocumento) {
-	        List<ClienteArchivo> clientes = leerClientes();
+	        List<Cliente> clientes = leerClientes();
 	        clientes = clientes.stream()
-	                .filter(c -> !c.getNumeroDocumento().equals(numeroDocumento))
+	                .filter(c -> !c.getDni().equals(numeroDocumento))
 	                .collect(Collectors.toList());
 	        escribirClientes(clientes);
 	    }
