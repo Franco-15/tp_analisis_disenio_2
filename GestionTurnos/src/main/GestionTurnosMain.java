@@ -12,6 +12,6 @@ public class GestionTurnosMain {
 		gestionServidores.iniciarServidores();
 		
 		GestionRecepcionServidor gestionRecepcionServidor = new GestionRecepcionServidor();
-		gestionRecepcionServidor.cargarClientes();
+		gestionRecepcionServidor.cargarClientesRegistrados();
 	}
 }

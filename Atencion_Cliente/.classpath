@@ -11,12 +11,12 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/UNMDP - ING/Analisis y Diseño 2/comunes.jar"/>
+	<classpathentry kind="lib" path="C:/Users/manue/Desktop/comunes.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

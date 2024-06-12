@@ -33,6 +33,7 @@ public class ColaEspera implements IColaEspera, Serializable{
 	 * false.
 	 */
 	public boolean agregar(TElementoColaEspera elementoCola) {
+		
 		return this.colaEspera.offer(elementoCola);
 	}
 

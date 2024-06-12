@@ -13,7 +13,7 @@ public class Registro {
 	}
 
 	public TRespuesta registrarCliente(String dni) {
-		this.cliente = new Cliente(dni);
+		this.cliente = new Cliente(dni,"","");
 		
 		return comunicacion.publicar(this.cliente);
 	}

@@ -3,8 +3,8 @@ package comunicacion;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
+import archivos.EGrupoAfinidad;
 import archivos.IArchivoLogs;
 import archivos.Log;
 import archivos.Logs;
@@ -17,6 +17,7 @@ import comunes.Respuestas;
 import comunes.TElementoColaEspera;
 import comunes.TRespuesta;
 import gestionTurnos.ColaEspera;
+import gestionTurnos.ColaRegistrados;
 import gestionTurnos.ListaACola;
 import gestionTurnos.Metricas;
 import gestionTurnos.Turnos;
@@ -27,27 +28,60 @@ public class GestionRecepcionServidor {
 	private IColaEspera colaEspera;
 	private Turnos turnos;
 	private Metricas metricas;
+	private ColaRegistrados colaClientesRegistrados;
+	private Configuracion configuracion;
 
 	public GestionRecepcionServidor() {
 		this.colaEspera = ColaEspera.getInstance();
 		this.turnos = Turnos.getInstance();
 		this.metricas = Metricas.getInstance();
+		this.configuracion = Configuracion.getInstance();
+		this.colaClientesRegistrados=ColaRegistrados.getInstance();
+
 	}
 
 	public TRespuesta agregarClienteAColaEspera(Cliente cliente) {
 		TElementoColaEspera elementoCola = new TElementoColaEspera(cliente);
 		Metricas metricas = Metricas.getInstance();
 		TRespuesta response = Respuestas.ErrorDeSistema();
-
+		boolean registrado = false;
 		if (this.colaEspera.existe(elementoCola)) {
 			response = Respuestas.DocumentoYaRegistrado();
 		} else {
-			boolean result = this.colaEspera.agregar(elementoCola);
+			boolean result;
+			for (TElementoColaEspera elem : this.colaClientesRegistrados.getColaRegistrados()) {
+				if (elem.getCliente().getDni().equals(cliente.getDni())) {
+					registrado = true;
+					elementoCola.getCliente().setGrupoAfinidad(elem.getCliente().getGrupoAfinidad());
+					elementoCola.getCliente().setGrupoAfinidad(elem.getCliente().getFechaNacimiento());
+					break;
+				}
+			}
+
+			if (registrado) {
+				result = this.colaEspera.agregar(elementoCola);
+				this.colaEspera.setColaEspera(Configuracion.getInstance().getEstrategiaLlamada()
+						.ordenarClientes(this.colaEspera.getColaEspera())); // ordeno la cola de espera si se loggea uno
+				// ya registrado nomas
+			} else {
+				elementoCola.getCliente().setGrupoAfinidad("GOLD");
+				elementoCola.getCliente().setFechaNacimiento("2024-12-30");
+				result = this.colaEspera.agregar(elementoCola);
+			}
+
 			if (result) {
 				metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
 				metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() + 1);
 				response = Respuestas.RegistroExitoso();
+				Logs logs = Logs.getInstance();
+				logs.agregarLog(new Log(elementoCola.getCliente().getDni(), "Cliente Registrado",
+						LocalDateTime.now().toString()));
+				IArchivoLogs archivo = configuracion.getFactoryArchivos().crearArchivoLogs();
+				archivo.escribirLogs(logs.obtenerLista());
+				metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
+				metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() + 1);
 			}
+
 		}
 		return response;
 	}
@@ -55,10 +89,10 @@ public class GestionRecepcionServidor {
 	public MensajeAtencionCliente atenderCliente(MensajeAtencionCliente mensaje) {
 		return turnos.atenderCliente(mensaje);
 	}
-	
+
 	public MensajeComunicacion resultadoAtencion(MensajeAtencionCliente mensaje) {
 		String result = turnos.resultadosAtencion(mensaje);
-		
+
 		return new MensajeComunicacion(result);
 	}
 
@@ -78,25 +112,15 @@ public class GestionRecepcionServidor {
 		this.colaEspera.setColaEspera(nuevosDatosSincronizacion.getColaEspera().getColaEspera());
 		this.metricas.setMetricas(nuevosDatosSincronizacion.getMetricas());
 	}
-	
-	public void cargarClientes() {
-		Logs logs = Logs.getInstance();
-		Configuracion configuracion = Configuracion.getInstance();
-		
+
+	public void cargarClientesRegistrados() {
+
 		IArchivoLogs archivo = configuracion.getFactoryArchivos().crearArchivoLogs();
-		List<Cliente> listaClientes = configuracion.getFactoryArchivos().crearArchivoClientes().leerClientes();
+		List<Cliente> listaClientesRegistrados = configuracion.getFactoryArchivos().crearArchivoClientes()
+				.leerClientes();
 		ListaACola listaACola = new ListaACola();
-		Queue<TElementoColaEspera> colaClientes = listaACola.obtenerColaClientes(listaClientes);
-		
-		if(configuracion.getEstrategiaLlamada() != null)
-			colaClientes = configuracion.getEstrategiaLlamada().ordenarClientes(colaClientes);
-		
-		for(TElementoColaEspera elemento : colaClientes) {
-			this.colaEspera.agregar(elemento);
-			logs.agregarLog(new Log(elemento.getCliente().getDni(), "Cliente Registrado", LocalDateTime.now().toString()));
-			archivo.escribirLogs(logs.obtenerLista());
-			metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
-			metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() + 1);
-		}
+		this.colaClientesRegistrados.setColaRegistrados(listaACola.obtenerColaClientes(listaClientesRegistrados));
+
 	}
+
 }
