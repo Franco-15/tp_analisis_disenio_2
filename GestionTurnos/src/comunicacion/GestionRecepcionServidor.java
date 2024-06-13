@@ -1,5 +1,6 @@
 package comunicacion;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class GestionRecepcionServidor {
 		Metricas metricas = Metricas.getInstance();
 		TRespuesta response = Respuestas.ErrorDeSistema();
 		boolean registrado = false;
+		System.out.println(configuracion.getEstrategiaLlamada());
 		if (this.colaEspera.existe(elementoCola)) {
 			response = Respuestas.DocumentoYaRegistrado();
 		} else {
@@ -53,7 +55,7 @@ public class GestionRecepcionServidor {
 				if (elem.getCliente().getDni().equals(cliente.getDni())) {
 					registrado = true;
 					elementoCola.getCliente().setGrupoAfinidad(elem.getCliente().getGrupoAfinidad());
-					elementoCola.getCliente().setGrupoAfinidad(elem.getCliente().getFechaNacimiento());
+					elementoCola.getCliente().setFechaNacimiento(elem.getCliente().getFechaNacimiento());
 					break;
 				}
 			}
@@ -61,13 +63,14 @@ public class GestionRecepcionServidor {
 			if (registrado) {
 				result = this.colaEspera.agregar(elementoCola);
 				this.colaEspera.setColaEspera(Configuracion.getInstance().getEstrategiaLlamada()
-						.ordenarClientes(this.colaEspera.getColaEspera())); // ordeno la cola de espera si se loggea uno
-				// ya registrado nomas
+						.ordenarClientes(this.colaEspera.getColaEspera())); 
+				
 			} else {
-				elementoCola.getCliente().setGrupoAfinidad("GOLD");
-				elementoCola.getCliente().setFechaNacimiento("2024-12-30");
+				elementoCola.getCliente().setGrupoAfinidad("gold");
+				elementoCola.getCliente().setFechaNacimiento(LocalDate.now().toString());
 				result = this.colaEspera.agregar(elementoCola);
 			}
+
 
 			if (result) {
 				metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
@@ -78,10 +81,8 @@ public class GestionRecepcionServidor {
 						LocalDateTime.now().toString()));
 				IArchivoLogs archivo = configuracion.getFactoryArchivos().crearArchivoLogs();
 				archivo.escribirLogs(logs.obtenerLista());
-				metricas.actualizarCantidadClientesRegistrados(this.metricas.getcantTotalClientesRegistrados() + 1);
-				metricas.actualizarClienteEnEspera(this.metricas.getClientesEnEspera() + 1);
 			}
-
+			
 		}
 		return response;
 	}
@@ -114,8 +115,6 @@ public class GestionRecepcionServidor {
 	}
 
 	public void cargarClientesRegistrados() {
-
-		IArchivoLogs archivo = configuracion.getFactoryArchivos().crearArchivoLogs();
 		List<Cliente> listaClientesRegistrados = configuracion.getFactoryArchivos().crearArchivoClientes()
 				.leerClientes();
 		ListaACola listaACola = new ListaACola();

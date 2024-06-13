@@ -1,4 +1,4 @@
 {
-	"ordenAtencion": "grupo afinidad",
-	"archivo": "clientes.json"
+	"ordenAtencion": "grupo etario",
+	"archivo": "clientes.txt"
 }

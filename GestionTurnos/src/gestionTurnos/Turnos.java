@@ -47,7 +47,15 @@ public class Turnos {
 			this.contLlamados = 0;
 			clienteLlamado = colaClientesYaLlamados.sacar();
 			mensaje.setYaFueLlamado(true);
-		} else {
+		}  
+		else if(colaEspera.tamaño() > 0){
+			this.contLlamados-=1;
+			clienteLlamado = colaEspera.sacar();
+			logs.agregarLog(new Log(clienteLlamado.getCliente().getDni(), "Cliente llamado", LocalDateTime.now().toString()));
+			archivo.escribirLogs(logs.obtenerLista());
+			mensaje.setYaFueLlamado(false);
+		}
+		else {
 			System.out.println("No hay clientes para ser atendidos");
 			return mensaje;
 		}
@@ -83,7 +91,9 @@ public class Turnos {
 			}
 			else {
 				colaClientesYaLlamados.agregar(mensaje.getCliente());
+				this.contLlamados=2;
 				result = "El cliente fue agregado a la cola para volver a ser llamado";
+				
 			}
 		}
 		
